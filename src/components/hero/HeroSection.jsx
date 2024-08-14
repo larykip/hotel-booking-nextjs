@@ -4,13 +4,13 @@ import React from 'react'
 
 const HeroSection = () => {
   return (
-    <section className='flex'>
-      <div>
-        <Image src='https://cdn.pixabay.com/photo/2023/12/15/03/11/basket-to-the-sea-8449952_1280.jpg' width={500} height={500} alt='logo'/>
+    <section className='flex justify-between bg-red-700'>
+      <div className='basis-1/2 relative w-[500px] h-[500px]'>
+        <Image src='https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' fill alt='logo'/>
       </div>
-      <div className='flex flex-col items-center'>
-        <h1>Hero Section</h1>
-        <button>Hero Section</button>
+      <div className='flex flex-col basis-1/2 justify-center items-center'>
+        <h1 className='text-3xl m-3'>Hero Section</h1>
+        <button className=' p-3 bg-blue-500 rounded-2xl'>Hero Section</button>
       </div>
     </section>
   )
