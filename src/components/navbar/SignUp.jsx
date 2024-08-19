@@ -1,15 +1,15 @@
 import Link from 'next/link'
-import React from 'react'
+import { Button } from "@/components/ui/button"
+import { SignInDialogue } from './SignInDialogue'
 
 const SignUp = () => {
   return (
-    <div className='space-x-2'>
-      <Link href=''>
-        <button>Join</button>
-      </Link>
-      <Link href=''>
-        <button>Sign Up</button>
-      </Link>
+    <div className='flex space-x-2'>
+      <Button variant="ghost">
+        <Link href="/join">Join</Link>
+      </Button>
+
+      <SignInDialogue/>
     </div>
   )
 }

@@ -1,12 +1,12 @@
-import React from 'react'
 import Logo from './Logo'
 import SignUp from './SignUp'
 
 const Navbar = () => {
   return (
-    <div className='flex justify-between bg-green-500'>
+    <div className='flex justify-between items-center bg-green-500'>
         <Logo />
-      <div>navbar</div>
+      <div>NAVBAR LINKS to placed here!</div>
+      
       <SignUp/>
     </div>
   )
