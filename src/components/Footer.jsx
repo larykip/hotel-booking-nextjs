@@ -1,11 +1,14 @@
-import React from 'react'
+import { Button } from "@/components/ui/button"
+
 
 const Footer = () => {
   return (
     <div className=' border border-t-slate-400 flex flex-col w-full items-center mt-4 gap-y-2 bg-slate-300'>
       <section>
-        <button className='bg-black text-white py-2 px-3 rounded-2xl'>Back to Top</button>
+        <Button>Back to top</Button>
+        {/* <button className='bg-black text-white py-2 px-3 rounded-2xl'>Back to Top</button> */}
       </section>
+      
       <section className='flex justify-around w-full'>
         <div>
             <h2 className='m-2 font-bold ml-0 t'>Support</h2>

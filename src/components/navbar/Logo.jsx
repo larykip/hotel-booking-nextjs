@@ -5,9 +5,9 @@ import React from 'react'
 const Logo = () => {
   return (
     <>
-      <Link href='/'>
-        <Image src='/images/vercel.svg' width={100} height={100} alt='logo'/>
-        <h2>Logo</h2>
+      <Link href='/' className='flex items-center'>
+        <Image src='/images/logo.jpg' width={100} height={100} alt='logo'/>
+        {/* <h2>Metro Manor</h2> */}
       </Link>
     </>
   )
