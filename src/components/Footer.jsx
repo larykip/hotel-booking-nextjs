@@ -1,11 +1,17 @@
 import { Button } from "@/components/ui/button"
+import { ChevronUp } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
 
 const Footer = () => {
   return (
-    <div className=' border border-t-slate-400 flex flex-col w-full items-center mt-4 gap-y-2 bg-slate-300'>
+    <div className='flex flex-col pt-4 w-full items-center mt-4 gap-y-2 bg-gray-200'>
       <section>
-        <Button>Back to top</Button>
+        <Button className="flex items-center">
+          <ChevronUp className="h-4 w-4 mr-2" />
+          <Link href="#">Back to top</Link>
+        </Button>
         {/* <button className='bg-black text-white py-2 px-3 rounded-2xl'>Back to Top</button> */}
       </section>
       
@@ -14,41 +20,44 @@ const Footer = () => {
             <h2 className='m-2 font-bold ml-0 t'>Support</h2>
             <ul className='space-y-2'>
                 <li><a>Help Center</a></li>
-                <li><a>AirCover</a></li>
                 <li>Disability Support<a></a></li>
                 <li><a>Cancellation Options</a></li>
                 <li><a>Anti-Discrimination</a></li>
             </ul>
         </div>
-        <div><h2>Support</h2>
-            <ul className='gap-y-2'>
-                <li><a>Help Center</a></li>
-                <li><a>AirCover</a></li>
-                <li>Disability Support<a></a></li>
-                <li><a>Cancellation Options</a></li>
-                <li><a>Anti-Discrimination</a></li>
-            </ul></div>
         <div>
-        <h2>Support</h2>
-            <ul className='gap-y-2'>
-                <li><a>Help Center</a></li>
-                <li><a>AirCover</a></li>
-                <li>Disability Support<a></a></li>
-                <li><a>Cancellation Options</a></li>
-                <li><a>Anti-Discrimination</a></li>
+            <h2 className='m-2 font-bold ml-0 t'>Legal</h2>
+            <ul className='space-y-2'>
+                <li><a>Terms of Service</a></li>
+                <li><a>Privacy Policy</a></li>
+                <li>Cookie Policy<a></a></li>
+                <li><a>Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <h2 className='m-2 font-bold ml-0 t'>About Us</h2>
+            <ul className='space-y-2'>
+                <li><a>About Us</a></li>
+                <li><a>Our Story</a></li>
+                <li>Careers<a></a></li>
+                <li><a>Press</a></li>
             </ul>
         </div>
       </section>
-      <section className='flex justify-around w-full'>
+
+      <section className='flex p-1 justify-around w-full border-t-2 border-white'>
         <div className='flex space-x-2'>
-            <p>Terms</p>
-            <p>Privacy</p>
-            <p>2024</p>
+            <p>All Rights Reserved ©️ 2024</p>
         </div>
         <div className='flex space-x-2'>
-            <p>Twitter</p>
-            <p>Instgram</p>
-            <p>Tiktok</p>
+            <Image src="images/icons8-twitterx.svg" width={25} height={25}></Image>
+            <p>@MetroManor</p>
+
+            <Image src="images/icons8-instagram.svg" width={25} height={25}></Image>
+            <p>@MetroManor</p>
+
+            <Image src="images/icons8-tiktok.svg" width={25} height={25}></Image>
+            <p>@MetroManor</p>
         </div>
       </section>
     </div>

@@ -5,7 +5,7 @@ import PitchSection from "@/components/pitch/PitchSection";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col p-8">
+    <main className="flex min-h-screen flex-col px-8">
       <Navbar/>
       <HeroSection/>
       <PitchSection/>
