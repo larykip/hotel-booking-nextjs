@@ -3,9 +3,9 @@ import SignUp from './SignUp'
 
 const Navbar = () => {
   return (
-    <div className='flex justify-between items-center bg-green-500'>
+    <div className='flex justify-between items-center'>
         <Logo />
-      <div>NAVBAR LINKS to placed here!</div>
+      {/* <div>Following Airbnb style of no navbar links</div> */}
       
       <SignUp/>
     </div>

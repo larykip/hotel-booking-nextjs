@@ -2,13 +2,17 @@ import PitchCarousel from './PitchCarousel'
 
 const PitchSection = () => {
   return (
-    <>
-      <h1 className='text-3xl'>What we Offer</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit beatae quae odio deleniti laboriosam sed recusandae reprehenderit saepe iste amet, illum, labore obcaecati placeat quibusdam earum? Adipisci pariatur eius incidunt?</p>
+    <section className='my-16'>
+      <h1 className='text-3xl font-bold my-4 text-blue-700'>
+        What we Offer
+      </h1>
+      <p>
+        From cozy single rooms perfect for solo adventurers to spacious suites ideal for families or those seeking extra space and elegance, we have it all. Whether you're looking for a room with a view, a relaxing jacuzzi, or a cozy fireplace, we have the perfect room for you.
+      </p>
       <div className='flex justify-center'>
           <PitchCarousel/>
       </div>
-    </>
+    </section>
   )
 }
 
