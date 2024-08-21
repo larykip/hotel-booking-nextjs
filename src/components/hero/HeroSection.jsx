@@ -14,7 +14,7 @@ const HeroSection = () => {
       {/* Hero Text */}
       <div className='flex flex-col basis-1/2 justify-center items-center'>
         <h1 className='text-3xl m-3'>Hero Section</h1>
-        <Button className="">Find Rooms</Button>
+        <Button className="">Explore</Button>
       </div>
     </section>
   )
