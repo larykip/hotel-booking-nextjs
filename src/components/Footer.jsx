@@ -3,7 +3,6 @@ import { ChevronUp } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
-
 const Footer = () => {
   return (
     <div className='flex flex-col pt-4 w-full items-center mt-4 gap-y-2 bg-gray-200'>
@@ -50,13 +49,28 @@ const Footer = () => {
             <p>All Rights Reserved ©️ 2024</p>
         </div>
         <div className='flex space-x-2'>
-            <Image src="images/icons8-twitterx.svg" width={25} height={25}></Image>
+            <Image 
+              src="images/icons8-twitterx.svg" 
+              width={25} 
+              height={25} 
+              alt="Twitter logo"
+            />
             <p>@MetroManor</p>
 
-            <Image src="images/icons8-instagram.svg" width={25} height={25}></Image>
+            <Image 
+              src="images/icons8-instagram.svg" 
+              width={25} 
+              height={25} 
+              alt="Instagram logo"
+            />
             <p>@MetroManor</p>
 
-            <Image src="images/icons8-tiktok.svg" width={25} height={25}></Image>
+            <Image 
+              src="images/icons8-tiktok.svg" 
+              width={25} 
+              height={25} 
+              alt="TikTok logo"
+            />
             <p>@MetroManor</p>
         </div>
       </section>
