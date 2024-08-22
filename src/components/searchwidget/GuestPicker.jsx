@@ -10,8 +10,10 @@ import { MinusCircle, PlusCircle, Undo2 } from "lucide-react"
 const GuestPicker = () => {
   return (
     <Popover>
-        <PopoverTrigger>
-            <Button variant="outline">Add Guests</Button>
+        <PopoverTrigger asChild>
+            <div className="inline-block">
+                <Button variant="outline">Add Guests</Button>
+            </div>
         </PopoverTrigger>
         <PopoverContent>
             {/* Adults */}
