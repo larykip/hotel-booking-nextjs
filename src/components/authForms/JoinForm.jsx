@@ -7,14 +7,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
 
 
 // join form schema using zod
-const formSchema = z.object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
+export const formSchema = z.object({
+    firstName: z.string().min(1, { message: "Must be 1 or more characters long" }),
+    lastName: z.string().min(1, { message: "Must be 1 or more characters long" }),
     emailAddress: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(6, { message: "Must be a minimum of 6 characters" }),
     passwordConfirm: z.string(),
     gender: z.enum(["male", "female"]),
 }).refine((data) => { // validates password confirmation field
@@ -25,6 +26,8 @@ const formSchema = z.object({
 });
 
 const JoinForm = () => {
+    const [error, setError] = useState('');
+
     // form definition
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -38,8 +41,26 @@ const JoinForm = () => {
     });
 
     // our submit handler
-    const onSubmit = (values) => {
-        console.log({values});
+    const onSubmit = async (values) => {
+        // console.log({values});
+
+        try {
+            const response = await fetch('/api/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(values),
+            });
+            
+            if (response.ok) {
+              // Redirect to dashboard or home page
+              window.location.href = '/';
+            } else {
+              const errorData = await response.json();
+              setError(errorData.error);
+            }
+          } catch (err) {
+            setError('An error occurred. Please try again.');
+          }
     }
 
     return (
@@ -153,6 +174,8 @@ const JoinForm = () => {
                         }}
                     />
                     {/* End of passwordConfirm field */}
+
+                    {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
                     <Button type="submit" className="w-full">Create account</Button>
                 </form>

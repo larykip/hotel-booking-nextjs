@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 // sign in form schema using zod
 const formSchema = z.object({
     emailAddress: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(6, { message: "Must be a minimum of 6 characters" }),
 });
 
 const SignInForm = () => {
