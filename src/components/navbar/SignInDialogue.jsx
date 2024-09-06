@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -8,9 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { Separator } from "../ui/separator"
+import SignInForm from "../authForms/SignInForm"
 
 export function SignInDialogue() {
     return (
@@ -21,38 +22,25 @@ export function SignInDialogue() {
 
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Sign In to your account</DialogTitle>
+                    <DialogTitle>Sign In</DialogTitle>
+                    <DialogDescription>Welcome back, login to your account</DialogDescription>
                 </DialogHeader>
 
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="email" className="text-right">
-                        Email
-                        </Label>
-                        <Input
-                        id="email"
-                        type="email"
-                        defaultValue="email@example.com"
-                        className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="password" className="text-right">
-                        Password
-                        </Label>
-                        <Input
-                        id="password"
-                        type="password"
-                        defaultValue="password@123"
-                        className="col-span-3"
-                        />
-                    </div>
-                </div>
+                <Separator />
+
+                {/* Sign in form */}
+                <SignInForm/>
+
+                <Separator />
                     
-                <DialogFooter>
-                    <Button>
-                        <Link href="/signin">Sign In</Link>
-                    </Button>
+                <DialogFooter className="sm:justify-center sm:items-center gap-2">
+                    <DialogDescription className="justify-self-center">Not yet a member?</DialogDescription>
+
+                    <Link href="/join" className={buttonVariants({ variant: "outline" })}>Join Now</Link>
+
+                    {/* <Button variant="outline">
+                        <Link href="/join">Join Now</Link>
+                    </Button> */}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
