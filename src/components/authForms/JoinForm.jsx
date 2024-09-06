@@ -45,7 +45,7 @@ const JoinForm = () => {
         // console.log({values});
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await fetch('/api/auth', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(values),
@@ -59,6 +59,7 @@ const JoinForm = () => {
               setError(errorData.error);
             }
           } catch (err) {
+            console.error('Submit Error:', err);
             setError('An error occurred. Please try again.');
           }
     }
@@ -108,7 +109,7 @@ const JoinForm = () => {
                         render={({field}) => {
                             return <FormItem>
                                 <FormLabel>Gender</FormLabel>
-                                <Select onValueChange={field.onChange}>
+                                <Select onValueChange={field.onChange} value={field.value || ''}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Choose your gender"/>
