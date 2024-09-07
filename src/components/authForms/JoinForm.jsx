@@ -45,7 +45,7 @@ const JoinForm = () => {
         // console.log({values});
 
         try {
-            const response = await fetch('/api/auth', {
+            const response = await fetch('/api/auth/join', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(values),
