@@ -1,6 +1,7 @@
 // male hair styles = hat, variant60, variant53, variant49, variant44
 // female hair styles = variant01, variant02, variant03, variant04, variant10
 // background colour can be changed to any hex value by default it is transparent
+// TODO: user selected background colour generation
 
 const avatarGenerator = async (gender, firstName) => {
     let baseUrl = 'https://api.dicebear.com/9.x/';
