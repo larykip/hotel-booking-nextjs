@@ -1,3 +1,4 @@
+import avatarGenerator from "@/lib/avatar";
 import connectMongoDB from "@/lib/mongodb";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
@@ -11,8 +12,11 @@ export async function POST(req) {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        // generate an avatar for the user
+        const userAvatar = await avatarGenerator(gender, firstName);
+
         await connectMongoDB()
-        await User.create({ firstName, lastName, gender, emailAddress, avatar, password: hashedPassword })
+        await User.create({ firstName, lastName, gender, emailAddress, avatar: userAvatar, password: hashedPassword })
 
         return NextResponse.json(
             { message: 'User created successfully' }, 

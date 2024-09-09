@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { SignInDialogue } from './SignInDialogue'
+import SignInDropDown from './SignInDropDown'
 
 const SignUp = () => {
   return (
@@ -10,6 +11,8 @@ const SignUp = () => {
       </Button>
 
       <SignInDialogue/>
+      
+      <SignInDropDown />
     </div>
   )
 }
