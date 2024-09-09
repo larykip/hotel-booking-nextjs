@@ -1,21 +1,17 @@
-// seed creates exact same avatar each time, so it cannot be male/female
-// create arrays/objects containing hair variants applicable for males and females
-// select correct values based on selected gender
-// use firstname as seed
-
-
-// male = hat, variant60, variant53, variant49, variant44
-// female = variant01, variant02, variant03, variant04, variant10
+// male hair styles = hat, variant60, variant53, variant49, variant44
+// female hair styles = variant01, variant02, variant03, variant04, variant10
+// background colour can be changed to any hex value by default it is transparent
 
 const avatarGenerator = async (gender, firstName) => {
     let baseUrl = 'https://api.dicebear.com/9.x/';
     let avatarStyle = "notionists";
     let hairVariant = "";
+    let beardProbability = "25";
 
     const options = {
-        beardProbability: "0",
-        bodyIconProbability: "20",
+        bodyIconProbability: "10",
         gestureProbability: "0",
+        backgroundColor: "transparent",
     };
 
     // select gender-specific hair variants
@@ -23,17 +19,19 @@ const avatarGenerator = async (gender, firstName) => {
         hairVariant = "hat,variant60,variant53,variant49,variant44";
     } else if (gender === 'female') {
         hairVariant = "variant01,variant02,variant03,variant04,variant10";
+        beardProbability = "0";
     }
 
     // Build the query string based on options
-    const queryString = Object.entries(options)
-        .map(([key], value) => `${key}=${value}`)
-        .join('&');
+    const queryString = new URLSearchParams({
+        ...options, // Spread the options object to include additional parameters
+    });
 
     // Build url string
-    const url = `${baseUrl}${avatarStyle}/svg?seed=${firstName}&hair=${hairVariant}&${queryString}`;
+    const url = `${baseUrl}${avatarStyle}/svg?seed=${firstName}&hair=${hairVariant}&beardProbability=${beardProbability}&${queryString.toString()}`;
     //debug
-    console.log(url);
+    //console.log(url);
+    
     // fetch avatar from api
     const response = await fetch(url);
 
