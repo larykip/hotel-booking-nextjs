@@ -24,8 +24,25 @@ const SignInForm = () => {
     });
 
     // our submit handler
-    const onSubmit = (values) => {
-        console.log({values});
+    const onSubmit = async(values) => {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            });
+
+            if (response.ok) {
+                // Redirect to dashboard or home page
+                window.location.href = '/';
+            } else {
+                const errorData = await response.json();
+                setError(errorData.error);
+            }
+        } catch(error){
+            console.error('Submit Error:', err);
+            setError('An error occurred. Please try again.');
+        }
     }
 
     return (
