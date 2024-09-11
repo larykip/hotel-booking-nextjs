@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/hero/HeroSection";
 import Navbar from "@/components/navbar/Navbar";
 import PitchSection from "@/components/pitch/PitchSection";
+import ReviewsSection from "@/components/reviews/ReviewsSection";
 import SearchWidget from "@/components/searchwidget/SearchWidget";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <SearchWidget/>
       <HeroSection/>
       <PitchSection/>
+      <ReviewsSection/>
       <Footer/>
     </main>
   );
