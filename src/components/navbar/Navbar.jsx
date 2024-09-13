@@ -6,6 +6,7 @@ import SignUp from './SignUp';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import SignInDropDown from './SignInDropDown';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -54,6 +55,7 @@ const Navbar = () => {
       <Logo />
       {isLoggedIn && user ? (
         <div>
+          <SignInDropDown/>
           <Link href="/dashboard">Welcome, {user.firstName}! </Link>
           <br/>
           <button onClick={handleLogout}>Logout</button>

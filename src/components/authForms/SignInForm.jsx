@@ -47,7 +47,7 @@ const SignInForm = () => {
                 setError(errorData.error);
             }
         } catch(error){
-            console.error('Submit Error:', err);
+            console.error('Submit Error:', error);
             setError('An error occurred. Please try again.');
         }
     }
