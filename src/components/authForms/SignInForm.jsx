@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 // sign in form schema using zod
 const formSchema = z.object({
@@ -23,6 +25,8 @@ const SignInForm = () => {
         }
     });
 
+    const router = useRouter();
+    
     // our submit handler
     const onSubmit = async(values) => {
         try {
@@ -35,12 +39,15 @@ const SignInForm = () => {
             if (response.ok) {
                 // Redirect to dashboard or home page
                 window.location.href = '/';
+                const data = await response.json();
+                Cookies.set('token', data.token, { expires: 1 }); // Save the token in a cookie
+                router.push('/'); // Go to the main page
             } else {
                 const errorData = await response.json();
                 setError(errorData.error);
             }
         } catch(error){
-            console.error('Submit Error:', err);
+            console.error('Submit Error:', error);
             setError('An error occurred. Please try again.');
         }
     }

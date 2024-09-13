@@ -11,8 +11,6 @@ const SignUp = () => {
       </Button>
 
       <SignInDialogue/>
-      
-      <SignInDropDown />
     </div>
   )
 }
