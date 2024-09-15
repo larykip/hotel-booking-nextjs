@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 
 // join form schema using zod
@@ -27,6 +28,7 @@ export const formSchema = z.object({
 
 const JoinForm = () => {
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // form definition
     const form = useForm({
@@ -42,7 +44,8 @@ const JoinForm = () => {
 
     // our submit handler
     const onSubmit = async (values) => {
-        // console.log({values});
+        setIsLoading(true);
+        setError('');
 
         try {
             const response = await fetch('/api/auth/join', {
@@ -58,10 +61,12 @@ const JoinForm = () => {
               const errorData = await response.json();
               setError(errorData.error);
             }
-          } catch (err) {
+        } catch (err) {
             console.error('Submit Error:', err);
             setError('An error occurred. Please try again.');
-          }
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -178,7 +183,14 @@ const JoinForm = () => {
 
                     {error && <p className="text-sm font-medium text-destructive">{error}</p>}
 
-                    <Button type="submit" className="w-full">Create account</Button>
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="m-2 h-4 w-4 animate-spin" />
+                                Creating account...
+                            </>
+                        ) : 'Create account'}
+                    </Button>
                 </form>
 
             </Form>
