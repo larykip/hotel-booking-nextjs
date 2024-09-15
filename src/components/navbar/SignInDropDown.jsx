@@ -38,12 +38,13 @@ const SignInDropDown = ({ handleLogout }) => {
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuGroup>
+                    {/* Route to main dashboard page*/}
                     <DropdownMenuItem >
-                        <Link href="/" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
+                        <Link href="/dashboard" className="flex items-center gap-2"><User className="h-4 w-4" /> My Account</Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
-                        <Link href="/" className="flex items-center gap-2"><User className="h-4 w-4" /> Profile</Link>
+                    <DropdownMenuItem >
+                        <Link href="/" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
@@ -56,6 +57,7 @@ const SignInDropDown = ({ handleLogout }) => {
 
                 <DropdownMenuSeparator />
                 
+                {/* Sign out button */}
                 <DropdownMenuItem>
                     <Link onClick={handleLogout} href="/" className="flex  items-center gap-2"> <LogOut className="h-4 w-4" />Sign out</Link>
                 </DropdownMenuItem>
