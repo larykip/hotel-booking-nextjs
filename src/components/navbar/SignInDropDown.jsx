@@ -14,7 +14,7 @@ import Link from "next/link";
 
 
 
-const SignInDropDown = () => {
+const SignInDropDown = ({ handleLogout }) => {
   return (
     <section>
         <DropdownMenu>
@@ -57,7 +57,7 @@ const SignInDropDown = () => {
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuItem>
-                    <Link href="/" className="flex  items-center gap-2"> <LogOut className="h-4 w-4" />Sign out</Link>
+                    <Link onClick={handleLogout} href="/" className="flex  items-center gap-2"> <LogOut className="h-4 w-4" />Sign out</Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
             {/* Menu Ends here */}

@@ -54,11 +54,9 @@ const Navbar = () => {
     <div className='flex justify-between items-center'>
       <Logo />
       {isLoggedIn && user ? (
-        <div>
-          <SignInDropDown/>
+        <div className='flex flex-col items-center'>
           <Link href="/dashboard">Welcome, {user.firstName}! </Link>
-          <br/>
-          <button onClick={handleLogout}>Logout</button>
+          <SignInDropDown handleLogout={handleLogout}/>
         </div>
       ) : (
         <SignUp />
