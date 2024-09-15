@@ -20,15 +20,17 @@ const SignInDropDown = ({ handleLogout, user }) => {
         <DropdownMenu>
             {/* Dropdown menu button */}
             <DropdownMenuTrigger asChild className="rounded-full border border-black">
-                    <Image
-                        width={50}
-                        height={50}
-                        // fetch random avatar if user has no avatar
-                        src={user.avatar || `https://api.dicebear.com/9.x/glass/svg?seed=${Math.random().toString(36).substring(7)}`}
-                        alt="avatar"
-                        unoptimized={true}
-                        className="rounded-full"
-                    />
+                    <Button variant="ghost" className="p-0 w-full h-full"> 
+                        <Image
+                            width={50}
+                            height={50}
+                            // fetch random avatar if user has no avatar
+                            src={user.avatar || `https://api.dicebear.com/9.x/glass/svg?seed=${Math.random().toString(36).substring(7)}`}
+                            alt="avatar"
+                            unoptimized={true}
+                            className="rounded-full"
+                        />
+                    </Button>
             </DropdownMenuTrigger>
             
             {/* Menu Starts here */}
