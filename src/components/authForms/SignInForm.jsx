@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 // sign in form schema using zod
 const formSchema = z.object({
@@ -16,6 +18,9 @@ const formSchema = z.object({
 });
 
 const SignInForm = () => {
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
     // form definition
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -29,6 +34,9 @@ const SignInForm = () => {
     
     // our submit handler
     const onSubmit = async(values) => {
+        setIsLoading(true);
+        setError('');
+
         try {
             const response = await fetch('/api/auth/login', {
                 method: 'POST',
@@ -49,6 +57,8 @@ const SignInForm = () => {
         } catch(error){
             console.error('Submit Error:', error);
             setError('An error occurred. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -88,11 +98,21 @@ const SignInForm = () => {
                     />
                     {/* End of password field */}
 
-                    <Button type="submit" className="w-full">Sign in with Email</Button>
+                    {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+
+                    <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="m-2 h-4 w-4 animate-spin" />
+                                Signing in...
+                            </>
+                        ) : 'Sign in with Email' }
+                        
+                    </Button>
                 </form>
             </Form>
         </main>
     )
 }
 
-export default SignInForm
+export default SignInForm;

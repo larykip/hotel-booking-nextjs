@@ -14,36 +14,38 @@ import Link from "next/link";
 
 
 
-const SignInDropDown = ({ handleLogout }) => {
+const SignInDropDown = ({ handleLogout, user }) => {
   return (
     <section>
         <DropdownMenu>
             {/* Dropdown menu button */}
             <DropdownMenuTrigger asChild className="rounded-full border border-black">
-                    {/* TODO: This should take user avatar from database */}
-                    <Image
-                        width={50}
-                        height={50}
-                        src="https://api.dicebear.com/9.x/notionists/svg?seed=John&hair=hat,variant60,variant53,variant49,variant44&beardProbability=100&bodyIconProbability=20&gestureProbability=0"
-                        alt="avatar"
-                        unoptimized={true}
-                        className="rounded-full"
-                    />
+                    <Button variant="ghost" className="p-0 w-full h-full"> 
+                        <Image
+                            width={50}
+                            height={50}
+                            // fetch random avatar if user has no avatar
+                            src={user.avatar || `https://api.dicebear.com/9.x/glass/svg?seed=${Math.random().toString(36).substring(7)}`}
+                            alt="avatar"
+                            unoptimized={true}
+                            className="rounded-full"
+                        />
+                    </Button>
             </DropdownMenuTrigger>
             
             {/* Menu Starts here */}
             <DropdownMenuContent className="w-56 mr-5">
-                {/* TODO: Consider using user's name instead of 'My Account' */}
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Welcome, {user.firstName}!</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 
                 <DropdownMenuGroup>
+                    {/* Route to main dashboard page*/}
                     <DropdownMenuItem >
-                        <Link href="/" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
+                        <Link href="/dashboard" className="flex items-center gap-2"><User className="h-4 w-4" /> My Account</Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
-                        <Link href="/" className="flex items-center gap-2"><User className="h-4 w-4" /> Profile</Link>
+                    <DropdownMenuItem >
+                        <Link href="/" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
@@ -56,6 +58,7 @@ const SignInDropDown = ({ handleLogout }) => {
 
                 <DropdownMenuSeparator />
                 
+                {/* Sign out button */}
                 <DropdownMenuItem>
                     <Link onClick={handleLogout} href="/" className="flex  items-center gap-2"> <LogOut className="h-4 w-4" />Sign out</Link>
                 </DropdownMenuItem>
