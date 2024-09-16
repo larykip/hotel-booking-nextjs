@@ -25,8 +25,17 @@ export async function POST(req) {
       { expiresIn: '1h' }
     );
 
-    // If login is successful, return a response
-    return NextResponse.json({ token }, { status: 200 });
+    const response = NextResponse.json({ message: 'Login successful' });
+
+    response.cookies.set('token', token, {
+      httpOnly: true,  // This helps prevent client-side JavaScript from accessing the cookie
+      secure: process.env.NODE_ENV === 'production', // Set to true in production
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // You can change to 'None' if necessary for cross-site requests
+      path: '/',  // Ensure the cookie is sent with every request to the domain
+      maxAge: 60 * 60, // 1 hour in seconds (should match token expiration)
+    });
+
+    return response;
   } catch (error) {
     console.error('Error logging in:', error);
     return NextResponse.json(

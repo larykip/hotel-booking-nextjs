@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import { useEffect, useState } from 'react';
 import Logo from './Logo';
 import SignUp from './SignUp';
@@ -15,28 +14,22 @@ const Navbar = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const token = Cookies.get('token');
-      if (token) {
-        setIsLoggedIn(true);
-        try {
-          const response = await fetch('/api/auth/user', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          if (response.ok) {
-            const userData = await response.json();
-            setUser(userData);
-          } else {
-            handleLogout();
-          }
-        } catch (error) {
-          console.error('Error fetching user:', error);
+      try {
+        const response = await fetch('/api/auth/user', {
+          method: 'GET',
+          credentials: 'include', // Include cookies
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setIsLoggedIn(true);
+          setUser(userData);
+        } else {
           handleLogout();
         }
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        handleLogout();
       }
     };
 
@@ -44,21 +37,30 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove('token');
-    setIsLoggedIn(false);
-    setUser(null);
-    router.push('/');
+    // Logout logic here (e.g., remove the cookie, redirect to home)
+    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      .then(() => {
+        setIsLoggedIn(false);
+        setUser(null);
+        router.push('/');
+      })
+      .catch(error => console.error('Error during logout:', error));
   };
 
+  // const handleLogout = () => {
+  //   Cookies.remove('token');   // Remove token from client-side
+  //   setIsLoggedIn(false);      // Reset user state
+  //   setUser(null);
+  //   router.push('/');          // Redirect to home
+  // }; 
+
   return (
-    <div className='flex justify-between items-center'>
+    <div className="flex justify-between items-center">
       <Logo />
       {isLoggedIn && user ? (
-        <div>
-          <SignInDropDown/>
-          <Link href="/dashboard">Welcome, {user.firstName}! </Link>
-          <br/>
-          <button onClick={handleLogout}>Logout</button>
+        <div className="flex flex-col items-center">
+          <Link href="/dashboard">Welcome, {user.firstName || 'User'}!</Link>
+          <SignInDropDown handleLogout={handleLogout} />
         </div>
       ) : (
         <SignUp />
