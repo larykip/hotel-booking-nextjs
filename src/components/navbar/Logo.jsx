@@ -12,6 +12,7 @@ const Logo = () => {
             height={100} 
             alt='logo' 
             priority
+            className='rounded-b-lg'
           />
         {/* <h2>Metro Manor</h2> */}
       </Link>

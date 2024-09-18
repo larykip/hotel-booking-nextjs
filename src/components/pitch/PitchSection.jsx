@@ -2,8 +2,8 @@ import PitchCarousel from './PitchCarousel'
 
 const PitchSection = () => {
   return (
-    <section className='my-16'>
-      <h1 className='text-3xl font-bold my-4 text-blue-700'>
+    <section className='flex flex-col px-8 text-center md:text-left max-w-[1200px] mx-auto my-16'>
+      <h1 className='text-xl md:text-3xl font-bold my-4 text-blue-700'>
         What we Offer
       </h1>
       <p>

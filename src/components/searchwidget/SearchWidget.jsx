@@ -6,9 +6,9 @@ import GuestPicker from "./GuestPicker"
 
 const SearchWidget = () => {
   return (
-    <section className="flex my-5 justify-center gap-6 items-center w-full h-[80px]">
+    <section className="flex flex-col md:flex-row p-2 md:p-0 my-5 justify-center gap-2 md:gap-6 items-center w-full sm:h-full md:h-[80px]">
         {/* Date range picker */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
             <h2>Select dates for your stay</h2>
             <DatePickerWithRange />
         </div>
