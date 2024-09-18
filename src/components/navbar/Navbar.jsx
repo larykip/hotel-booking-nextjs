@@ -55,7 +55,7 @@ const Navbar = () => {
   // }; 
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex px-8 justify-between items-center">
       <Logo />
       {isLoggedIn && user ? (
         <div className='flex items-center'>
