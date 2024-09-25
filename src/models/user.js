@@ -25,11 +25,8 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    isAdmin: {
-        type: Boolean,
-        required: true
-    },
-})
+    role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
+}, { timestamps: true })
 
 const User = mongoose.models.User || mongoose.model('User', userSchema)
 

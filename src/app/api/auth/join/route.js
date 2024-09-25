@@ -16,7 +16,7 @@ export async function POST(req) {
         const userAvatar = await avatarGenerator(gender, firstName);
 
         await connectMongoDB()
-        await User.create({ firstName, lastName, gender, emailAddress, avatar: userAvatar, password: hashedPassword, isAdmin: false  })
+        await User.create({ firstName, lastName, gender, emailAddress, avatar: userAvatar, password: hashedPassword, role  })
 
         return NextResponse.json(
             { message: 'User created successfully' }, 

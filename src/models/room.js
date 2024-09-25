@@ -23,24 +23,16 @@ const roomSchema = new Schema({
         type: Number,
         required: true
     },
-    bedType: {
-        type: String,
-        required: true
-    },
+    amenities: [String],
+    images: [String],
     description: {
         type: String,
         required: true
     },
-    isReserved: {
-        type: Boolean,
-        required: true
-    },
-    isOccupied: {
-        type: Boolean,
-        required: true
-    },
+    MaxGuests: { type: Number, required: true },
+    availability: [{ startDate: Date, endDate: Date }],
     
-})
+}, { timestamps: true })
 
 const Room = mongoose.models.Room || mongoose.model('Room', roomSchema)
 
