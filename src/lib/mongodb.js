@@ -5,7 +5,7 @@ const connectMongoDB = async () => {
     const uri = process.env.MONGODB_URI;
 
     // Debug log to ensure URI is loaded
-    console.log('MongoDB URI:', uri);
+    // console.log('MongoDB URI:', uri);
 
     if (!uri) {
         throw new Error('MongoDB URI is not defined');
