@@ -7,6 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -29,6 +30,7 @@ export const formSchema = z.object({
 const JoinForm = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     // form definition
     const form = useForm({
@@ -39,6 +41,7 @@ const JoinForm = () => {
             emailAddress: "",
             password: "",
             passwordConfirm: "",
+            gender: "",
         }
     });
 
@@ -56,13 +59,13 @@ const JoinForm = () => {
             
             if (response.ok) {
               // Redirect to dashboard or home page
-              window.location.href = '/';
+              router.push('/');
             } else {
               const errorData = await response.json();
-              setError(errorData.error);
+              setError(errorData.message);
             }
-        } catch (err) {
-            console.error('Submit Error:', err);
+        } catch (error) {
+            console.error('Submit Error:', error);
             setError('An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
@@ -181,7 +184,7 @@ const JoinForm = () => {
                     />
                     {/* End of passwordConfirm field */}
 
-                    {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+                    {error && <p className="text-sm font-medium text-destructive p-2 rounded-md bg-red-100 border border-red-300">{error}</p>}
 
                     <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (

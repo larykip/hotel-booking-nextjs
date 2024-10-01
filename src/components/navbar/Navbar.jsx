@@ -1,10 +1,10 @@
 "use client";
+
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { verifyToken } from '@/lib/tokenUtils';
 import Logo from './Logo';
 import SignUp from './SignUp';
-import Link from 'next/link';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import SignInDropDown from './SignInDropDown';
 
 const Navbar = () => {
@@ -15,20 +15,18 @@ const Navbar = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('/api/auth/user', {
-          method: 'GET',
-          credentials: 'include', // Include cookies
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setIsLoggedIn(true);
-          setUser(userData);
-        } else {
-          handleLogout();
+        const token = localStorage.getItem('MetroAuthToken');
+        if (token) {
+          const decodedToken = await verifyToken(token);
+          if (decodedToken) {
+            setIsLoggedIn(true);
+            setUser(decodedToken);
+          } else {
+            handleLogout();
+          }
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error('Error verifying token:', error);
         handleLogout();
       }
     };
@@ -36,23 +34,26 @@ const Navbar = () => {
     checkLoginStatus();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Logout logic here (e.g., remove the cookie, redirect to home)
-    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-      .then(() => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        // localStorage.removeItem('MetroAuthToken');
         setIsLoggedIn(false);
         setUser(null);
         router.push('/');
-      })
-      .catch(error => console.error('Error during logout:', error));
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
-
-  // const handleLogout = () => {
-  //   Cookies.remove('token');   // Remove token from client-side
-  //   setIsLoggedIn(false);      // Reset user state
-  //   setUser(null);
-  //   router.push('/');          // Redirect to home
-  // }; 
 
   return (
     <div className="flex px-8 justify-between items-center">
