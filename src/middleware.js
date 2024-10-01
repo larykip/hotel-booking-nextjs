@@ -1,38 +1,32 @@
 import { NextResponse } from "next/server";
-import * as jose from "jose";
+import { verifyToken } from "@/lib/tokenUtils";
 
-// Define an array of protected routes
-const protectedRoutes = ['/dashboard', '/join', /* '/profile', '/settings' */];
+export async function middleware(req) {
+    const { pathname } = req.nextUrl;
 
-export async function middleware(request) {
-  const token = request.cookies.get("token")?.value;
+    // Check if the request is for the /join or /dashboard routes
+    if (pathname === '/join' || pathname === '/dashboard') {
+        // Retrieve token from cookies
+        const token = req.cookies.get('MetroAuthToken')?.value;
 
-  console.log("Token from cookie:", token);
+        // Verify the token
+        const payload = await verifyToken(token);
 
-    // Check if the current path is in the protectedRoutes array
-    const isProtectedRoute = protectedRoutes.some(route => 
-        request.nextUrl.pathname.startsWith(route)
-      );
+        // If the user is authenticated and trying to access /join, redirect to homepage
+        if (payload && pathname === '/join') {
+            return NextResponse.redirect(new URL('/', req.url));
+        }
 
-  if (isProtectedRoute) {
-    if (token) {
-      try {
-        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-        const { payload } = await jose.jwtVerify(token, secret);
-        console.log("JWT Verification successful:", payload);
-        return NextResponse.next();
-      } catch (error) {
-        console.log("JWT Verification failed:", error.message);
-        return NextResponse.redirect(new URL("/", request.url));
-      }
+        // If the token is invalid or not present, redirect
+        if (!payload) {
+            return NextResponse.redirect(new URL('/', req.url));
+        }
     }
-    console.log("TOKEN INVALID OR MISSING");
-    return NextResponse.redirect(new URL("/join", request.url));
-  }
 
-  return NextResponse.next();
+    // If the user is authenticated or the route is not protected, continue to the requested route
+    return NextResponse.next();
 }
 
 export const config = {
-    matcher: ['/join', '/dashboard', '/dashboard/:path*']
-}
+    matcher: ['/join', '/dashboard'], // Apply middleware to these routes
+};
