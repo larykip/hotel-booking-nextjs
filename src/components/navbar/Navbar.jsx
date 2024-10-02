@@ -1,10 +1,9 @@
 "use client";
+
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Logo from './Logo';
 import SignUp from './SignUp';
-import Link from 'next/link';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import SignInDropDown from './SignInDropDown';
 
 const Navbar = () => {
@@ -15,9 +14,9 @@ const Navbar = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await fetch('/api/auth/user', {
+        const response = await fetch('/api/auth/login', {
           method: 'GET',
-          credentials: 'include', // Include cookies
+          credentials: 'include'
         });
 
         if (response.ok) {
@@ -28,7 +27,7 @@ const Navbar = () => {
           handleLogout();
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error('Error checking login status:', error);
         handleLogout();
       }
     };
@@ -36,23 +35,26 @@ const Navbar = () => {
     checkLoginStatus();
   }, []);
 
-  const handleLogout = () => {
-    // Logout logic here (e.g., remove the cookie, redirect to home)
-    fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
-      .then(() => {
+  const handleLogout = async () => {
+    // Logout logic here (invalidate cookie, redirect to home)
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        // localStorage.removeItem('MetroAuthToken');
         setIsLoggedIn(false);
         setUser(null);
         router.push('/');
-      })
-      .catch(error => console.error('Error during logout:', error));
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
-
-  // const handleLogout = () => {
-  //   Cookies.remove('token');   // Remove token from client-side
-  //   setIsLoggedIn(false);      // Reset user state
-  //   setUser(null);
-  //   router.push('/');          // Redirect to home
-  // }; 
 
   return (
     <div className="flex px-8 justify-between items-center">
