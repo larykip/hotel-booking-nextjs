@@ -48,7 +48,7 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     // Retrieve token from cookies
-    const token = req.cookies.get("token")?.value;
+    const token = req.cookies.get("MetroAuthToken")?.value;
 
     if (!token) {
       return NextResponse.json(

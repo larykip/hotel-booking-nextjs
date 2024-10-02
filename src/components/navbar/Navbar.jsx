@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { verifyToken } from '@/lib/tokenUtils';
 import Logo from './Logo';
 import SignUp from './SignUp';
 import SignInDropDown from './SignInDropDown';
@@ -15,18 +14,20 @@ const Navbar = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const token = localStorage.getItem('MetroAuthToken');
-        if (token) {
-          const decodedToken = await verifyToken(token);
-          if (decodedToken) {
-            setIsLoggedIn(true);
-            setUser(decodedToken);
-          } else {
-            handleLogout();
-          }
+        const response = await fetch('/api/auth/login', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setIsLoggedIn(true);
+          setUser(userData);
+        } else {
+          handleLogout();
         }
       } catch (error) {
-        console.error('Error verifying token:', error);
+        console.error('Error checking login status:', error);
         handleLogout();
       }
     };
@@ -35,7 +36,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    // Logout logic here (e.g., remove the cookie, redirect to home)
+    // Logout logic here (invalidate cookie, redirect to home)
     try {
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
