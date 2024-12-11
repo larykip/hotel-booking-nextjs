@@ -50,7 +50,7 @@ const CommandMenu = ({open, setOpen}) => {
 
   return (
     <Command.Dialog open={open} onOpenChange={setOpen} label="Global Command Menu"
-      className='fixed inset-0 bg-stone-950/50 z-10'
+      className='fixed inset-0 bg-stone-950/50 z-50'
       onClick={() => setOpen(false)}
     >
       <div onClick={(e) => e.stopPropagation()}
