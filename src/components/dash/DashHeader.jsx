@@ -1,7 +1,7 @@
-import { SidebarTrigger } from './ui/sidebar'
-import { Button } from './ui/button'
+import { SidebarTrigger } from '../ui/sidebar'
+import { Button } from '../ui/button'
 import { Bell, ChevronDown, LogOut, PencilLine, Sun } from 'lucide-react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -18,9 +18,10 @@ const DashHeader = () => {
             <div className='flex items-center gap-4'> 
                 <div className='flex items-center gap-2 text-sm'>
                     
-                    <span>Good morning!</span>
-                    <span className='font-bold'>Username</span>
+                    <span>Good morning,</span>
+                    <span className='font-bold'>Username!</span>
                 </div>
+                {/* TODO: Could also be changed to a date instead */}
                 <div className='flex items-center gap-2 text-sm'>
                     <Sun />
                     <span>22°C</span>
