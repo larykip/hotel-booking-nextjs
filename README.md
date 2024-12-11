@@ -16,7 +16,7 @@ MetroManor Hotel Booking System is a modern web application built with Next.js 1
 ### Tech Stack
 
 - **Frontend**: Next.js 14, React
-- **UI Components**: Shadcn UI
+- **UI Components**: Shadcn UI, Lucide-React, CMDK
 - **State Management**: React Hook Form, Zod for form validation
 - **Authentication**: JWT (JSON Web Tokens)
 - **Backend**: Next.js API Routes
