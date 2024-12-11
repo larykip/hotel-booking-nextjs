@@ -26,17 +26,17 @@ const navigation = [
   },
   {
     title: "Rooms",
-    url: "dashboard/rooms",
+    url: "/dashboard/rooms",
     icon: Bed,
   },
   {
     title: "Users",
-    url: "dashboard/users",
+    url: "/dashboard/users",
     icon: Users,
   },
   {
     title: "Help",
-    url: "dashboard/help",
+    url: "/dashboard/help",
     icon: HelpCircle,
   },
 ]
