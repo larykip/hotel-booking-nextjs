@@ -7,7 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Badge } from "../ui/badge";
-import { BedDouble, Hotel, Users } from "lucide-react";
+import { BedDouble, CreditCard, Hotel, Users } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
@@ -96,7 +96,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                 {/* TODO: Scroll area doesn't work as intended when viewable height is much smaller than the specified height */}
                 <ScrollArea className='h-[600px] my-4 p-4 rounded-lg border border-stone-200'>
                     {/* - - - tabs 1 (general) start - - - - - - - - - - - - - - - - - - - - -  */}
-                    <TabsContent value='general' className='space-y-4'>
+                    <TabsContent value='general' className='px-4 space-y-4'>
                         <div className="grid gap-4">                            
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="grid gap-2">
@@ -142,7 +142,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                     {/* - - - tabs 1 (general) end - - - - - - - - - - - - - - - - - - - - -  */}
                     
                     {/* - - - tabs 2 (order) start - - - - - - - - - - - - - - - - - - - - -  */}
-                    <TabsContent value='order' className='space-y-4'>
+                    <TabsContent value='order' className='px-4 space-y-4'>
                         <div className="space-y-4">
                             <div className="font-medium">Order Details</div>
                             <Table>
@@ -186,7 +186,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                         <div className="space-y-4">
                             <div className="font-medium">Special Requests</div>
                             <textarea
-                                className="w-full h-24 p-2 border rounded-md"
+                                className="w-full h-24 p-2 border rounded-md focus:outline focus:outline-black"
                                 placeholder="Enter any special requests or notes here..."
                             ></textarea>
                         </div>
@@ -194,13 +194,68 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                     {/* - - - tabs 2 (order) end - - - - - - - - - - - - - - - - - - - - -  */}
 
                     {/* - - - tabs 3 (payment) start - - - - - - - - - - - - - - - - - - - - -  */}
+                    <TabsContent value='payment' className='px-4 space-y-4'>
+                        <div className="space-y-4">
+                            <div className="font-medium">Payment Details</div>
+                            <div className="grid gap-4">
+                                <div className="grid gap-2">
+                                    <Label>Cardholder Name</Label>
+                                    <Input />
+                                </div>
 
+                                <div className="grid gap-2">
+                                    <Label>Card Number</Label>
+                                    <div className="relative">
+                                        <Input />
+                                        <CreditCard className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid gap-2">
+                                        <Label>Expiry Date</Label>
+                                        <Input placeholder='MM/YY'/>
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label>CVV</Label>
+                                        <Input type="password" maxLength={3} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="font-medium">Billing Address</div>
+                            <div className="grid gap-4">
+                                <div className="grid gap-2">
+                                    <Label>Address</Label>
+                                    <Input />
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid gap-2">
+                                        <Label>City</Label>
+                                        <Input />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label>Postal Code</Label>
+                                        <Input />
+                                    </div>
+                                </div>
+
+                                <div className="grid gap-2">
+                                    {/* TODO: This should be a Select component */}
+                                    <Label>Country</Label>
+                                    <Input />
+                                </div>
+                            </div>
+                        </div>
+                    </TabsContent>
                     {/* - - - tabs 3 (payment) end - - - - - - - - - - - - - - - - - - - - -  */}
 
                 </ScrollArea>
-
             </Tabs>
-
             {/* - - - tabs section end - - - - - - - - - - - - - - - - - - - - -  */}
 
             {/* - - - footer section start - - - - - - - - - - - - - - - - - - - - -  */}
