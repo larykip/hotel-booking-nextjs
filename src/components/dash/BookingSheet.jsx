@@ -10,6 +10,7 @@ import { Badge } from "../ui/badge";
 import { BedDouble, Hotel, Users } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 
 const BookingSheet = ({ room, isOpen, onClose }) => {
     const [date, setDate] = useState({
@@ -139,9 +140,57 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                         </div>
                     </TabsContent>
                     {/* - - - tabs 1 (general) end - - - - - - - - - - - - - - - - - - - - -  */}
-
+                    
                     {/* - - - tabs 2 (order) start - - - - - - - - - - - - - - - - - - - - -  */}
+                    <TabsContent value='order' className='space-y-4'>
+                        <div className="space-y-4">
+                            <div className="font-medium">Order Details</div>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Item</TableHead>
+                                        <TableHead>Quantity</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead>Total</TableHead>
+                                    </TableRow>
+                                </TableHeader>
 
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>Room {room?.number} ({room?.type || "Standard"})</TableCell>
+                                        <TableCell>1 night</TableCell>
+                                        <TableCell>KES {room?.price}</TableCell>
+                                        <TableCell>KES {room?.price}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Extra Bed</TableCell>
+                                        <TableCell>1</TableCell>
+                                        <TableCell>KES 500</TableCell>
+                                        <TableCell>KES 500</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Breakfast</TableCell>
+                                        <TableCell>2</TableCell>
+                                        <TableCell>KES 250</TableCell>
+                                        <TableCell>KES 500</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+
+                            {/* TODO: Replace this with table footer above. Also use array map for the table data */}
+                            <div className="flex justify-between items-center font-medium">
+                                <span>Total</span>
+                                <span>KES {room?.price}</span>
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <div className="font-medium">Special Requests</div>
+                            <textarea
+                                className="w-full h-24 p-2 border rounded-md"
+                                placeholder="Enter any special requests or notes here..."
+                            ></textarea>
+                        </div>
+                    </TabsContent>
                     {/* - - - tabs 2 (order) end - - - - - - - - - - - - - - - - - - - - -  */}
 
                     {/* - - - tabs 3 (payment) start - - - - - - - - - - - - - - - - - - - - -  */}
