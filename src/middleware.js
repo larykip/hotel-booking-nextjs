@@ -27,5 +27,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ['/dashboard', '/join'], // Apply middleware to these routes
+    matcher: ['/join', '/dashboard'], // Apply middleware to these routes
 };
