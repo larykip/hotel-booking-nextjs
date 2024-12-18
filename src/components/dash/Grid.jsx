@@ -1,7 +1,9 @@
-import ActivityGraph from "@/components/dash/ActivityGraph";
-import CalendarView from "@/components/dash/CalendarView";
-import Grid from "@/components/dash/Grid";
-import { StatCards } from "@/components/dash/StatCards";
+import React from 'react'
+import { StatCards } from './StatCards'
+import ActivityGraph from './ActivityGraph'
+import CalendarView from './CalendarView'
+import ActivityFeed from './ActivityFeed'
+
 
 async function fetchDashboardData() {
   // Simulate API delay
@@ -121,8 +123,7 @@ async function fetchDashboardData() {
   };
 }
 
-
-export default async function DashboardPage(){
+const Grid = async() => {
   const dashboardData = await fetchDashboardData();
 
   // Calculate percentages for the divs
@@ -130,12 +131,18 @@ export default async function DashboardPage(){
   const vacantPercentage = (dashboardData.stats.occupancy.vacant / totalRooms) * 100;
   const occupiedPercentage = (dashboardData.stats.occupancy.occupied / totalRooms) * 100;
   const notReadyPercentage = (dashboardData.stats.occupancy.notReady / totalRooms) * 100;
-  
-    return (
-    // TODO: DashboardSeaction is unnecessary and safe to remove
-    <section className='border-stone-200 border p-2 h-full'>
-      <StatCards stats={dashboardData.stats}/>
-      <Grid/>
-    </section>
-    )
+
+  return (
+    <div className='grid grid-cols-12 gap-3 py-3'>
+        <div className='col-span-8 space-y-3'>
+            <ActivityGraph/>
+            <ActivityFeed activities={dashboardData.activities}/>
+        </div>
+        <div className='col-span-4 bg-white rounded-lg border'>
+            <CalendarView bookings={dashboardData.calendar.bookings} roomTypes={dashboardData.calendar.roomTypes} />
+        </div>
+    </div>
+  )
 }
+
+export default Grid
