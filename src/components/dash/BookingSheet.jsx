@@ -11,6 +11,7 @@ import { BedDouble, CreditCard, Hotel, Users } from "lucide-react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { format } from "date-fns";
 
 const BookingSheet = ({ room, isOpen, onClose }) => {
     const [date, setDate] = useState({
@@ -97,47 +98,82 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                 <ScrollArea className='h-[600px] my-4 p-4 rounded-lg border border-stone-200'>
                     {/* - - - tabs 1 (general) start - - - - - - - - - - - - - - - - - - - - -  */}
                     <TabsContent value='general' className='px-4 space-y-4'>
-                        <div className="grid gap-4">                            
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="grid gap-2">
-                                    <Label>Nights</Label>
-                                    <Input type='number' defaultValue='1'/>
+                        {room?.customer ? (
+                            <div className="space-y-4">
+                                <div className="font-semibold">
+                                    <div className="flex items-center justify-between gap-2 p-2 border rounded-lg">
+                                        <div className="px-5 gap-2">
+                                            <p className="text-gray-500">Days of stay</p>
+                                            <p>{format(new Date(room.customer.checkIn), 'MMM d, yyyy')} - {format(new Date(room.customer.checkOut), 'MMM d, yyyy')}</p>
+                                        </div>
+                                        <div className="px-5 gap-2 border-l border-stone-200">
+                                            <p className="text-gray-500">Night</p>
+                                            <p>#</p>
+                                        </div>
+                                        <div className="px-5 gap-2 border-l border-stone-200">
+                                            <p className="text-gray-500">Adults</p>
+                                            <p>#</p>
+                                        </div>
+                                        <div className="px-5  gap-2 border-l border-stone-200">
+                                            <p className="text-gray-500">Children</p>
+                                            <p>#</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="grid gap-2">
-                                    <Label>Adults</Label>
-                                    <Input type='number' defaultValue='2'/>
+                                    <div className="flex gap-4">
+                                        <p>Guest name</p>
+                                        <p className="font-semibold">{room.customer.name}</p>
+                                    </div>
+                                    
+                                    {/* Add more customer details as needed */}
                                 </div>
-                                <div className="grid gap-2">
-                                    <Label>Children</Label>
-                                    <Input type='number' defaultValue='0'/>
+                            </div>                     
+                        ) : (
+                            <div className="grid gap-4">                            
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid gap-2">
+                                        <Label>Nights</Label>
+                                        <Input type='number' defaultValue='1'/>
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label>Adults</Label>
+                                        <Input type='number' defaultValue='2'/>
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label>Children</Label>
+                                        <Input type='number' defaultValue='0'/>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label>First Name</Label>
-                                    <Input />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid gap-2">
+                                        <Label>First Name</Label>
+                                        <Input />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label>Last Name</Label>
+                                        <Input />
+                                    </div>
                                 </div>
-                                <div className="grid gap-2">
-                                    <Label>Last Name</Label>
-                                    <Input />
-                                </div>
-                            </div>
 
-                            <div className="grid gap-2">
-                                <div className="font-medium">Days of stay</div>
-                                <div className="">
-                                    <Calendar
-                                        mode='range'
-                                        selected={date}
-                                        onSelect={setDate}
-                                        numberOfMonths={2}
-                                        className='flex rounded-lg border'
-                                    />
+                                <div className="grid gap-2">
+                                    <div className="font-medium">Days of stay</div>
+                                    <div className="">
+                                        <Calendar
+                                            mode='range'
+                                            selected={date}
+                                            onSelect={setDate}
+                                            numberOfMonths={2}
+                                            className='flex rounded-lg border'
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
+                        )}
+                        
+                        
                     </TabsContent>
                     {/* - - - tabs 1 (general) end - - - - - - - - - - - - - - - - - - - - -  */}
                     
@@ -292,16 +328,18 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
 
 function getStatusColor(status) {
     switch (status) {
-      case "AVAILABLE":
-        return "bg-green-500";
-      case "OCCUPIED":
-        return "bg-red-500";
-      case "MAINTENANCE":
-        return "bg-yellow-500";
-      case "CLEANING":
-        return "bg-blue-500";
-      default:
-        return "bg-gray-500";
+        case "AVAILABLE":
+            return "bg-green-500";
+        case "OCCUPIED":
+            return "bg-red-500";
+        case "MAINTENANCE":
+            return "bg-yellow-500";
+        case "CLEANING":
+            return "bg-blue-500";
+        case "BOOKED":
+            return "bg-purple-500";
+        default:
+            return "bg-gray-500";
     }
 }
 
