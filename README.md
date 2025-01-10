@@ -16,7 +16,7 @@ MetroManor Hotel Booking System is a modern web application built with Next.js 1
 ### Tech Stack
 
 - **Frontend**: Next.js 14, React
-- **UI Components**: Shadcn UI, Lucide-React, CMDK
+- **UI Components**: Shadcn UI, Aceternity, Lucide-React, CMDK
 - **State Management**: React Hook Form, Zod for form validation
 - **Authentication**: JWT (JSON Web Tokens)
 - **Backend**: Next.js API Routes
@@ -52,6 +52,8 @@ To set up and run the MetroManor Hotel Booking System on your local machine, fol
    JWT_SECRET=your_jwt_secret_key
    ```
 
+Note: Ensure you have Node.js (version 22 or later) and npm installed on your machine before proceeding.
+
 3. Install the dependencies:
    ```bash
    npm install
@@ -63,5 +65,3 @@ To set up and run the MetroManor Hotel Booking System on your local machine, fol
    ```
 
 5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
-
-Note: Ensure you have Node.js (version 14 or later) and npm installed on your machine before starting.
