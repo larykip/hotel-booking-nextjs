@@ -7,7 +7,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -20,6 +19,7 @@ const formSchema = z.object({
 const SignInForm = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     // form definition
     const form = useForm({
@@ -29,8 +29,6 @@ const SignInForm = () => {
             password: "",
         }
     });
-
-    const router = useRouter();
     
     // our submit handler
     const onSubmit = async(values) => {
@@ -46,13 +44,10 @@ const SignInForm = () => {
 
             if (response.ok) {
                 // Redirect to dashboard or home page
-                window.location.href = '/';
-                const data = await response.json();
-                Cookies.set('token', data.token, { expires: 1 }); // Save the token in a cookie
-                router.push('/'); // Go to the main page
+                router.push('/dashboard');
             } else {
                 const errorData = await response.json();
-                setError(errorData.error);
+                setError(errorData.message);
             }
         } catch(error){
             console.error('Submit Error:', error);
@@ -98,7 +93,7 @@ const SignInForm = () => {
                     />
                     {/* End of password field */}
 
-                    {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+                    {error && <p className="text-sm font-medium text-destructive p-2 rounded-md bg-red-100 border border-red-300">{error}</p>}
 
                     <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
