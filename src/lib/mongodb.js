@@ -11,13 +11,35 @@ const connectMongoDB = async () => {
         throw new Error('MongoDB URI is not defined');
     
     }
-    try {
-        await mongoose.connect(uri);
-        console.log('MongoDB connected successfully');
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-        throw error;
+
+    let cached = global.mongoose;
+
+    if (!cached) {
+        cached = global.mongoose = { conn: null, promise: null };
     }
+
+    if (cached.conn) {
+        return cached.conn;
+    }
+
+    if (!cached.promise) {
+        const opts = {
+          bufferCommands: false,
+        };
+    
+        cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+          return mongoose;
+        });
+    }
+
+    try {
+        cached.conn = await cached.promise;
+    } catch (error) {
+        cached.promise = null;
+        throw 0;
+    }
+
+    return cached.conn;
 }
 
 export default connectMongoDB;
