@@ -9,7 +9,6 @@ const connectMongoDB = async () => {
 
     if (!uri) {
         throw new Error('MongoDB URI is not defined');
-    
     }
 
     let cached = global.mongoose;
@@ -28,6 +27,7 @@ const connectMongoDB = async () => {
         };
     
         cached.promise = mongoose.connect(uri, opts).then((mongoose) => {
+          console.log('MongoDB successfully connected');
           return mongoose;
         });
     }
