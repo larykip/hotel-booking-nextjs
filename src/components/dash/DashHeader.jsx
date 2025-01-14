@@ -1,3 +1,5 @@
+"use client";
+
 import { SidebarTrigger } from '../ui/sidebar'
 import { Button } from '../ui/button'
 import { Bell, ChevronDown, LogOut, PencilLine, Sun } from 'lucide-react'
@@ -6,6 +8,33 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const DashHeader = () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      console.log('Attempting to log out...');
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Logout response:', response);
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Clear the local storage or any client-side authentication state if needed
+      localStorage.removeItem('authToken');
+
+      // Force a reload of the page to update the client-side state
+      window.location.reload();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <header className='flex'>
         <div className='flex items-center justify-between px-2 py-4 w-full' >
@@ -62,7 +91,7 @@ const DashHeader = () => {
                         
                         {/* Sign out button */}
                         <DropdownMenuItem>
-                            <Link href="/" className="flex  items-center gap-2"> <LogOut className="h-4 w-4" />Sign out</Link>
+                            <button onClick={handleLogout} className="flex items-center gap-2 w-full text-left"> <LogOut className="h-4 w-4" />Sign out</button>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                     {/* Menu Ends here */}

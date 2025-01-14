@@ -7,6 +7,8 @@ import { NextResponse } from "next/server";
  */
 export async function POST() {
   try {
+    console.log('Logout request received');
+
     // create a new response
     const response = NextResponse.json(
       { message: 'Logged out successfully' },
@@ -20,6 +22,8 @@ export async function POST() {
       sameSite: 'strict',
       expires: new Date(0), // Set expiration to the past to delete the cookie
     });
+
+    // console.log('Logout response:', response);
 
     return response;
   } catch (error) {

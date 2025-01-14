@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@components/ui/button";
 import {
     DropdownMenu,
@@ -11,8 +13,6 @@ import {
 import Image from "next/image";
 import { CreditCard, LifeBuoy, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
-
-
 
 const SignInDropDown = ({ handleLogout, user }) => {
   return (
@@ -68,8 +68,6 @@ const SignInDropDown = ({ handleLogout, user }) => {
         </DropdownMenu>
 
     </section>
-
-
   )
 }
 
