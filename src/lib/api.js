@@ -6,6 +6,7 @@ const api = axios.create({
 
 export const fetchGuests = () => api.get('/guests');
 export const fetchRooms = () => api.get('/rooms');
+export const fetchAllUsers = () => api.get('/allusers');
 
 
 // Add more API calls as needed
