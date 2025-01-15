@@ -3,12 +3,27 @@
 import { useEffect, useState } from 'react';
 import { SidebarTrigger } from '../ui/sidebar'
 import { Button } from '../ui/button'
-import { Bell, ChevronDown, LogOut, PencilLine, Sun, Cloud, CloudRain } from 'lucide-react'
+import { Bell, ChevronDown, LogOut, PencilLine, Sun, Moon, Cloud, CloudRain, CloudSnow, CloudLightning, CloudSun, CloudMoon } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth';
 import { fetchWeather } from '@/lib/weather';
+
+const getWeatherIcon = (condition) => {
+  const iconMap = {
+    'clear': Sun,
+    'cloudy': Cloud,
+    'partly-cloudy': CloudSun,
+    'rain': CloudRain,
+    'snow': CloudSnow,
+    'thunderstorm': CloudLightning,
+    'fog': Cloud
+  };
+
+  const IconComponent = iconMap[condition] || Sun;
+  return <IconComponent className="w-5 h-5" />;
+};
 
 const DashHeader = () => {
   const { user, handleLogout, loading } = useAuth();
@@ -48,7 +63,7 @@ const DashHeader = () => {
                       <span>Loading weather...</span>
                     ) : weather && (
                       <>
-                        <Sun />
+                        {getWeatherIcon(weather.icon)}
                         <span>{weather.temperature}°C</span>
                         <span className='font-bold'>{weather.condition}</span>
                       </>
