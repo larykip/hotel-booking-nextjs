@@ -28,5 +28,5 @@ export async function middleware(req) {
 
 export const config = {
 	// Apply middleware to these routes
-	matcher: ["/join", "/dashboard", "/api/guests", "/api/rooms"],
+	matcher: ["/join", "/dashboard", "/api/guests", "/api/rooms", "/api/allusers"],
 };
