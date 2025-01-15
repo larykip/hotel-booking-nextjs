@@ -1,39 +1,33 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import { SidebarTrigger } from '../ui/sidebar'
 import { Button } from '../ui/button'
-import { Bell, ChevronDown, LogOut, PencilLine, Sun } from 'lucide-react'
+import { Bell, ChevronDown, LogOut, PencilLine, Sun, Cloud, CloudRain } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth';
+import { fetchWeather } from '@/lib/weather';
 
 const DashHeader = () => {
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    try {
-      console.log('Attempting to log out...');
-      const response = await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+  const { user, handleLogout, loading } = useAuth();
+  const [weather, setWeather] = useState(null);
+  const [weatherLoading, setWeatherLoading] = useState(true);
 
-      console.log('Logout response:', response);
+  useEffect(() => {
+    const getWeather = async () => {
+      const data = await fetchWeather();
+      setWeather(data);
+      setWeatherLoading(false);
+    };
 
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
+    getWeather();
+  }, []);
 
-      // Clear the local storage or any client-side authentication state if needed
-      localStorage.removeItem('MetroAuthToken');
-
-      // Force a reload of the page to update the client-side state
-      window.location.reload();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
+  if (loading) {
+    return <div className="flex items-center justify-center w-full h-16">Loading...</div>;
+  }
 
   return (
     <header className='flex'>
@@ -43,18 +37,22 @@ const DashHeader = () => {
                 <h1 className="text-xl font-semibold">Dashboard</h1>
             </div>
             
-            
             <div className='flex items-center gap-4'> 
                 <div className='flex items-center gap-2 text-sm'>
-                    
                     <span>Good morning,</span>
-                    <span className='font-bold'>Username!</span>
+                    <span className='font-bold'>{user?.firstName || 'User'}!</span>
                 </div>
                 {/* TODO: Could also be changed to a date instead */}
                 <div className='flex items-center gap-2 text-sm'>
-                    <Sun />
-                    <span>22°C</span>
-                    <span className='font-bold'>Sunny</span>
+                    {weatherLoading ? (
+                      <span>Loading weather...</span>
+                    ) : weather && (
+                      <>
+                        <Sun />
+                        <span>{weather.temperature}°C</span>
+                        <span className='font-bold'>{weather.condition}</span>
+                      </>
+                    )}
                 </div>
 
                 <Button className="gap-2">
@@ -87,7 +85,7 @@ const DashHeader = () => {
                     
                     {/* Menu Starts here */}
                     <DropdownMenuContent className="w-56 mr-5">
-                        <DropdownMenuLabel>Username</DropdownMenuLabel>
+                        <DropdownMenuLabel>{user?.firstName || ''} {user?.lastName || ''}</DropdownMenuLabel>
                         
                         {/* Sign out button */}
                         <DropdownMenuItem>
