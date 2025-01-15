@@ -9,6 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth';
 import { fetchWeather } from '@/lib/weather';
+import { getGreeting } from '@/utils/greeting';
 
 const getWeatherIcon = (condition) => {
   const iconMap = {
@@ -54,7 +55,7 @@ const DashHeader = () => {
             
             <div className='flex items-center gap-4'> 
                 <div className='flex items-center gap-2 text-sm'>
-                    <span>Good morning,</span>
+                    <span>{getGreeting()},</span>
                     <span className='font-bold'>{user?.firstName || 'User'}!</span>
                 </div>
                 {/* TODO: Could also be changed to a date instead */}
