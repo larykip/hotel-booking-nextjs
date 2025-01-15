@@ -28,5 +28,14 @@ export async function middleware(req) {
 
 export const config = {
 	// Apply middleware to these routes
-	matcher: ["/join", "/dashboard", "/api/guests", "/api/rooms", "/api/allusers"],
+	matcher: [
+		"/join",
+		"/dashboard",
+		"/dashboard/:path*", // matches all sub-paths under dashboard.
+		// The : indicates a dynamic segment, the * means it can match zero or more segments.
+		// For example, it would match /dashboard/settings, /dashboard/profile/edit, or even just /dashboard.
+		"/api/guests",
+		"/api/rooms",
+		"/api/allusers",
+	],
 };

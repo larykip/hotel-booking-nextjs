@@ -26,7 +26,7 @@ const DashHeader = () => {
       }
 
       // Clear the local storage or any client-side authentication state if needed
-      localStorage.removeItem('authToken');
+      localStorage.removeItem('MetroAuthToken');
 
       // Force a reload of the page to update the client-side state
       window.location.reload();
