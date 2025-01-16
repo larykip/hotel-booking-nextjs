@@ -1,7 +1,33 @@
+// Helper function to get current position
+const getCurrentPosition = () => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation is not supported by your browser'));
+    } else {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    }
+  });
+};
+
 export async function fetchWeather() {
   try {
+    // Get current location
+    let position;
+    try {
+      position = await getCurrentPosition();
+    } catch (error) {
+      console.warn('Failed to get location:', error);
+      return {
+        temperature: "N/A",
+        condition: "Weather not available",
+        icon: "clear" // fallback icon
+      };
+    }
+
     const today = new Date().toISOString().split('T')[0];
-    const response = await fetch(`https://api.brightsky.dev/weather?lat=52.5200&lon=13.4050&date=${today}`);
+    const response = await fetch(
+      `https://api.brightsky.dev/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&date=${today}`
+    );
     if (!response.ok) {
       throw new Error('Failed to fetch weather data');
     }
@@ -31,6 +57,10 @@ export async function fetchWeather() {
     };
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    return null;
+    return {
+      temperature: "N/A",
+      condition: "Weather not available",
+      icon: "clear" // fallback icon
+    };
   }
 }
