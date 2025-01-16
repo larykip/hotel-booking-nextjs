@@ -89,7 +89,7 @@ const DashHeader = () => {
                                 width={40}
                                 height={40}
                                 // fetch random avatar if user has no avatar
-                                src={`https://api.dicebear.com/9.x/glass/svg?seed=${Math.random().toString(36).substring(7)}`}
+                                src={user?.avatar || `https://api.dicebear.com/9.x/glass/svg?seed=${Math.random().toString(36).substring(7)}`}
                                 alt="avatar"
                                 unoptimized={true}
                                 className="rounded-full"
