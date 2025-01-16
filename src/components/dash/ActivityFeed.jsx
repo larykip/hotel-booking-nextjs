@@ -3,32 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { MessageCircle, ThumbsDown } from 'lucide-react'
+import { generateFakeActivities } from '@/utils/Faker'
 
-const activities = [
-    {
-      user: 'Faruk ahmad',
-      room: 'Room #1420',
-      date: '20/01/21 - 28/01/21',
-      time: '1 min',
-      avatar: 'https://gravatar.com/avatar/3a16a24e3049c2f56749b3f750f7707f?s=400&d=robohash&r=x',
-    },
-    {
-      user: 'Yasin arafat',
-      room: 'Room #1430',
-      date: '20/01/21 - 28/01/21',
-      time: '9 min',
-      avatar: 'https://gravatar.com/avatar/88f8a2ced75157598ca37e2c7ed4caee?s=400&d=robohash&r=x',
-    },
-    {
-      user: 'Rakib hassan',
-      room: 'Room #1422',
-      date: '20/01/21 - 28/01/21',
-      time: '21 min',
-      avatar: 'https://gravatar.com/avatar/e688d85a5fd5c211bcf6211c8d055d60?s=400&d=robohash&r=x',
-    },
-  ]
+const activities = generateFakeActivities(10);
 
-const ActivityFeed = ({ activities }) => {
+const ActivityFeed = () => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -49,8 +28,7 @@ const ActivityFeed = ({ activities }) => {
                   <p className="text-xs text-gray-500">{activity.time}</p>
                 </div>
                 <p className="text-sm text-gray-500">
-                  <span className="font-medium text-gray-900">{activity.user}</span>{" "}
-                  {activity.message}
+                  <span className="font-medium text-gray-900">{activity.user}</span> {activity.message}
                 </p>
                 {activity.actions && (
                   <div className="flex gap-2 mt-2">
@@ -70,7 +48,7 @@ const ActivityFeed = ({ activities }) => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default ActivityFeed
+export default ActivityFeed;
