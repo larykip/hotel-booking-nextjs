@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth';
 import { fetchWeather } from '@/lib/weather';
 import { getGreeting } from '@/utils/greeting';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const getWeatherIcon = (condition) => {
   const iconMap = {
@@ -42,7 +43,11 @@ const DashHeader = () => {
   }, []);
 
   if (loading) {
-    return <div className="flex items-center justify-center w-full h-16">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center w-full h-16">
+        <Skeleton className="h-4 w-32" />
+      </div>
+    );
   }
 
   return (
@@ -60,24 +65,26 @@ const DashHeader = () => {
                 </div>
                 {/* TODO: Could also be changed to a date instead */}
                 <div className='flex items-center gap-2 text-sm'>
-                    {weatherLoading ? (
-                      <span>Loading weather...</span>
-                    ) : weather && (
-                      <>
-                        {getWeatherIcon(weather.icon)}
-                        <span>{weather.temperature}°C</span>
-                        <span className='font-bold'>{weather.condition}</span>
-                      </>
-                    )}
+                  {weatherLoading ? (
+                    <div className="flex items-center gap-2">
+                    <Skeleton className="h-5 w-5 rounded-full" />
+                    </div>
+                  ) : weather && (
+                    <>
+                    {getWeatherIcon(weather.icon)}
+                    <span>{weather.temperature}°C</span>
+                    <span className='font-bold'>{weather.condition}</span>
+                    </>
+                  )}
                 </div>
 
                 <Button className="gap-2">
-                    <PencilLine className="w-4 h-4"/>
-                    New Reservation
+                  <PencilLine className="w-4 h-4"/>
+                  New Reservation
                 </Button>
 
                 <Button variant="ghost" size="icon">
-                    <Bell className="w-5 h-5"/>
+                  <Bell className="w-5 h-5"/>
                 </Button>
 
                 {/* Account dropdown menu start here */}
