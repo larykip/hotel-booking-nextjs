@@ -15,10 +15,6 @@ const roomSchema = new Schema({
         type: String,
         required: true
     },
-    roomSize: {
-        type: String,
-        
-    },
     price: {
         type: Number,
         required: true
@@ -30,7 +26,10 @@ const roomSchema = new Schema({
         required: true
     },
     MaxGuests: { type: Number, required: true },
-    availability: [{ startDate: Date, endDate: Date }],
+    status: {
+        type: String,
+        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE']
+    }
     
 }, { timestamps: true })
 

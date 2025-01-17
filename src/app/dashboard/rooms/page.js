@@ -9,7 +9,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, HousePlus, Plus, SearchIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+function getStatusColor(status) {
+  switch (status) {
+    case "AVAILABLE":
+      return "bg-green-500";
+    case "OCCUPIED":
+      return "bg-red-500";
+    case "MAINTENANCE":
+      return "bg-yellow-500";
+    case "CLEANING":
+      return "bg-blue-500";
+    case "BOOKED":
+      return "bg-purple-500";
+    default:
+      return "bg-gray-500";
+  }
+}
 
 const RoomsPage = () => {
   const [date, setDate] = useState(new Date());
@@ -17,6 +34,23 @@ const RoomsPage = () => {
   const [roomType, setRoomType] = useState("");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [roomTypes, setRoomTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await fetch('/api/rooms');
+        if (!response.ok) {
+          throw new Error('Failed to fetch rooms');
+        }
+        const data = await response.json();
+        setRoomTypes(data);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    }
+    fetchRooms()
+  }, [])
 
   const handleBookNow = (room) => {
     setSelectedRoom(room);
@@ -94,11 +128,9 @@ const RoomsPage = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='All'>All</SelectItem>
-              <SelectItem value='Standard'>Standard</SelectItem>
-              <SelectItem value='Junior'>Junior</SelectItem>
-              <SelectItem value='Deluxe'>Deluxe</SelectItem>
-              <SelectItem value='Executive'>Executive</SelectItem>
-              <SelectItem value='Presidential'>Presidential</SelectItem>
+              {roomTypes.map((type) => (
+                <SelectItem key={type.name} value={type.name}>{type.name}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
           {/* --- Room type filter start --- */}
@@ -131,9 +163,9 @@ const RoomsPage = () => {
                     <div className='mb-4'>
                       <div className='flex items-center justify-between'>
                         <div>
-                          <h3 className='font-semibold'>Room {room.number}</h3>
+                          <h3 className='font-semibold'>Room {room.roomNumber}</h3>
                           <div className='text-sm text-gray-500'>
-                            {room.guests} Guests • {room.floor}
+                            {room.MaxGuests} Guests • {room.floorNumber}
                           </div>
                         </div>
                         <Badge className={`${getStatusColor(room.status)} bg-opacity-90 hover:${getStatusColor(room.status)}`}>
@@ -155,7 +187,7 @@ const RoomsPage = () => {
                       
                     ) : (
                       <div className="flex flex-col justify-center text-center h-16 w-full">
-                        <p className="font-semibold">{room.customer?.name || "N/A"}</p>
+                        <p className="font-semibold">{room.guest?.name || "N/A"}</p>
                         {room.customer && (
                           <p className="text-sm text-gray-500">
                             {format(new Date(room.customer.checkIn), 'MMM d, yyyy')} - {format(new Date(room.customer.checkOut), 'MMM d, yyyy')}
@@ -240,21 +272,5 @@ const roomTypes = [
   ]},
 ]
 
-function getStatusColor(status) {
-  switch (status) {
-    case "AVAILABLE":
-      return "bg-green-500";
-    case "OCCUPIED":
-      return "bg-red-500";
-    case "MAINTENANCE":
-      return "bg-yellow-500";
-    case "CLEANING":
-      return "bg-blue-500";
-    case "BOOKED":
-      return "bg-purple-500";
-    default:
-      return "bg-gray-500";
-  }
-}
 
 export default RoomsPage;
