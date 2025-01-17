@@ -2,6 +2,7 @@
   "name": "hotel-booking-nextjs",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.4.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-avatar": "^1.1.2",
@@ -30,8 +30,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "date-fns": "^3.6.0",
-    "dotenv": "^16.4.5",
-    "faker": "^6.6.6",
+    "dotenv": "^16.4.7",
     "framer-motion": "^11.5.4",
     "jose": "^5.9.3",
     "js-cookie": "^3.0.5",
@@ -50,6 +49,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
