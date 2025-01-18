@@ -37,7 +37,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
   
     return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="sm:w-[90%] sm:max-w-[1000px]">
+        <SheetContent className="sm:w-[90%] sm:max-w-[1000px] overflow-y-auto">
             {/* - - - header section start - - - - - - - - - - - - - - - - - - - - -  */}
             <SheetHeader className='space-y-4 pb-4 border-b'>
                 <div className="flex justify-between items-center">
@@ -95,7 +95,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                 </TabsList>
 
                 {/* TODO: Scroll area doesn't work as intended when viewable height is much smaller than the specified height */}
-                <ScrollArea className='h-[600px] my-4 p-4 rounded-lg border border-stone-200'>
+                <ScrollArea className='h-[calc(100vh-300px)] my-4 p-4 rounded-lg border border-stone-200'>
                     {/* - - - tabs 1 (general) start - - - - - - - - - - - - - - - - - - - - -  */}
                     <TabsContent value='general' className='px-4 space-y-4'>
                         {room?.customer ? (
@@ -131,7 +131,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                             </div>                     
                         ) : (
                             <div className="grid gap-4">                            
-                                <div className="grid grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <div className="grid gap-2">
                                         <Label>Nights</Label>
                                         <Input type='number' defaultValue='1'/>
@@ -146,7 +146,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label>First Name</Label>
                                         <Input />
@@ -159,13 +159,19 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
 
                                 <div className="grid gap-2">
                                     <div className="font-medium">Days of stay</div>
-                                    <div className="">
+                                    <div className="overflow-x-auto">
                                         <Calendar
                                             mode='range'
                                             selected={date}
                                             onSelect={setDate}
                                             numberOfMonths={2}
-                                            className='flex rounded-lg border'
+                                            className='flex flex-col sm:flex-row rounded-lg border p-4'
+                                            classNames={{
+                                                months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                                                head_cell: "w-9 font-normal text-xs",
+                                                cell: "h-9 w-9 text-center text-sm p-0 relative hover:bg-stone-100 rounded-md",
+                                                day: "h-9 w-9 p-0 font-normal",
+                                            }}
                                         />
                                     </div>
                                 </div>
