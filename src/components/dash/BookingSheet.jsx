@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { ScrollArea } from "../ui/scroll-area";
@@ -14,24 +16,180 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { format } from "date-fns";
 
 const BookingSheet = ({ room, isOpen, onClose }) => {
+    const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
     const [date, setDate] = useState({
         from: new Date(),
         to: new Date(),
-    })
+    });
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        adults: 1,
+        children: 0,
+        specialRequests: ''
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     // Helper fn to determine button state
     const getButtonState = () => {
         switch (room?.status) {
             case "AVAILABLE":
-                return { text: "Book Now", variant: "default", onClick: handleBookNow };
+                return { text: "Book Now", variant: "default", onClick: () => handleBookNow() };
             case "BOOKED":
-                return { text: "Check-in", variant: "default", onClick: handleCheckIn };
+                return { text: "Check-in", variant: "default", onClick: () => handleCheckIn() };
             case "OCCUPIED":
-                return { text: "Check-out", variant: "default", onClick: handleCheckOut };
+                return { text: "Check-out", variant: "default", onClick: () => handleCheckOut() };
             default:
                 return { text: "Not Available", variant: "secondary", onClick: () => {} };
         }
     }
+
+    const validateDates = (checkIn, checkOut) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (checkIn < today) {
+            throw new Error("Check-in date cannot be in the past");
+        }
+        if (checkOut <= checkIn) {
+            throw new Error("Check-out date must be after check-in date");
+        }
+        
+        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+        if (nights < 1) {
+            throw new Error("Minimum stay is 1 night");
+        }
+    };
+
+    const handleBookNow = async () => {
+        if (!user) {
+            toast.error("Please login to book a room");
+            return;
+        }
+
+        if (!formData.firstName || !formData.lastName) {
+            toast.error("Please enter guest details");
+            return;
+        }
+
+        if (!date.from || !date.to) {
+            toast.error("Please select check-in and check-out dates");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            validateDates(date.from, date.to);
+
+            // Debug log
+            console.log('Attempting to book room:', {
+                roomId: room._id,
+                roomNumber: room.roomNumber,
+                status: room.status,
+                dates: { from: date.from, to: date.to }
+            });
+
+            const response = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    roomId: room._id,
+                    customerId: user._id,
+                    checkInDate: date.from,
+                    checkOutDate: date.to,
+                    totalCost: room.price * Math.ceil((date.to - date.from) / (1000 * 60 * 60 * 24)),
+                    guestDetails: {
+                        firstName: formData.firstName,
+                        lastName: formData.lastName,
+                        adults: parseInt(formData.adults),
+                        children: parseInt(formData.children),
+                        specialRequests: formData.specialRequests
+                    }
+                })
+            });
+
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to create booking');
+            }
+
+            toast.success(data.message || "Room booked successfully");
+            onClose();
+            window.location.reload();
+        } catch (error) {
+            toast.error(error.message);
+            console.error("Booking error details:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleCheckIn = async () => {
+        if (!user) {
+            toast.error("Please login to perform this action");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await fetch(`/api/rooms/${room._id}/checkin`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    actualCheckIn: new Date(),
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error);
+
+            toast.success("Check-in successful");
+            onClose();
+            window.location.reload();
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleCheckOut = async () => {
+        if (!user) {
+            toast.error("Please login to perform this action");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await fetch(`/api/rooms/${room._id}/checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    actualCheckOut: new Date(),
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error);
+
+            toast.success("Check-out successful");
+            onClose();
+            window.location.reload();
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const buttonState = getButtonState();
   
@@ -138,22 +296,42 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                                     </div>
                                     <div className="grid gap-2">
                                         <Label>Adults</Label>
-                                        <Input type='number' defaultValue='2'/>
+                                        <Input 
+                                            name="adults"
+                                            value={formData.adults}
+                                            onChange={handleInputChange}
+                                            type='number'
+                                            defaultValue='2'
+                                        />
                                     </div>
                                     <div className="grid gap-2">
                                         <Label>Children</Label>
-                                        <Input type='number' defaultValue='0'/>
+                                        <Input 
+                                            name="children"
+                                            value={formData.children}
+                                            onChange={handleInputChange}
+                                            type='number'
+                                            defaultValue='0'
+                                        />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="grid gap-2">
                                         <Label>First Name</Label>
-                                        <Input />
+                                        <Input 
+                                            name="firstName"
+                                            value={formData.firstName}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
                                     <div className="grid gap-2">
                                         <Label>Last Name</Label>
-                                        <Input />
+                                        <Input 
+                                            name="lastName"
+                                            value={formData.lastName}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
                                 </div>
 
@@ -228,6 +406,9 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                         <div className="space-y-4">
                             <div className="font-medium">Special Requests</div>
                             <textarea
+                                name="specialRequests"
+                                value={formData.specialRequests}
+                                onChange={handleInputChange}
                                 className="w-full h-24 p-2 border rounded-md focus:outline focus:outline-black"
                                 placeholder="Enter any special requests or notes here..."
                             ></textarea>
@@ -347,22 +528,6 @@ function getStatusColor(status) {
         default:
             return "bg-gray-500";
     }
-}
-
-// Placeholder functions for booking actions
-const handleBookNow = () => {
-// Implement booking logic
-    console.log("Booking room", room.number);
-}
-
-const handleCheckIn = () => {
-// Implement check-in logic
-    console.log("Checking in room", room.number);
-}
-
-const handleCheckOut = () => {
-// Implement check-out logic
-    console.log("Checking out room", room.number);
 }
 
 export default BookingSheet;

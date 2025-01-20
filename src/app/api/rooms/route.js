@@ -5,6 +5,7 @@ import Room from '@/models/room';
 export async function GET() {
     try {
       await connectMongoDB();
+      // Remove populate since we don't need it yet
       const rooms = await Room.find({}).lean();
       
       // Group rooms by type
@@ -12,18 +13,24 @@ export async function GET() {
         if (!acc[room.roomType]) {
           acc[room.roomType] = [];
         }
-        acc[room.roomType].push(room);
+        
+        acc[room.roomType].push({
+          ...room,
+          id: room._id.toString(),
+          _id: room._id.toString(),
+          roomNumber: room.roomNumber,
+          type: room.roomType,
+          floor: room.floorNumber,
+          // Ensure status is properly set
+          status: room.status || 'AVAILABLE'
+        });
         return acc;
       }, {});
   
       // Convert to array of room types
       const roomTypesArray = Object.entries(roomTypes).map(([name, rooms]) => ({
         name,
-        rooms: rooms.map(room => ({
-          ...room,
-          id: room._id.toString(),
-          status: room.availability && room.availability.length > 0 ? 'BOOKED' : 'AVAILABLE'
-        }))
+        rooms
       }));
   
       return NextResponse.json(roomTypesArray);
@@ -31,7 +38,7 @@ export async function GET() {
       console.error('Error fetching rooms:', error);
       return NextResponse.json({ error: 'Failed to fetch rooms' }, { status: 500 });
     }
-  }
+}
   
 // export async function GET() {
 //     await connectMongoDB();

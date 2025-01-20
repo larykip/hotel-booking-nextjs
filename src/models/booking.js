@@ -7,8 +7,15 @@ const bookingSchema = new Schema({
     checkOutDate: { type: Date, required: true },
     totalCost: { type: Number, required: true },
     paymentStatus: { type: String, enum: ['pending', 'completed', 'failed'], default: 'pending' },
-  }, { timestamps: true });
+    actualCheckIn: { type: Date },
+    actualCheckOut: { type: Date },
+    status: {
+        type: String,
+        enum: ['confirmed', 'checked_in', 'checked_out', 'cancelled'],
+        default: 'confirmed'
+    }
+}, { timestamps: true });
   
-  const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
+const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
 
-  export default Booking;  
+export default Booking;
