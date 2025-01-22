@@ -26,8 +26,8 @@ const userSchema = new Schema({
         required: true
     },
     role: { type: String, enum: ['guest', 'admin'], default: 'guest' },
-}, { timestamps: true })
+}, { timestamps: true });
 
-const User = mongoose.models.User || mongoose.model('User', userSchema)
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;

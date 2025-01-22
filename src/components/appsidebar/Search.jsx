@@ -3,9 +3,14 @@
 import { Command } from 'cmdk';
 import { useEffect, useState } from 'react';
 import { Bed, FileText, Mail, MessageCircle, Plus, SearchIcon, Settings, Users } from 'lucide-react';
+import Link from 'next/link';
 
+/**
+ * Search component that provides a search functionality within the sidebar.
+ * @returns {JSX.Element} The rendered Search component.
+ */
 const Search = () => {
-  const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -70,64 +75,90 @@ const CommandMenu = ({open, setOpen}) => {
           {/* TODO: The groupings & items below are subject to change with app functionality and user permissions */}
           {/* Rooms group */}
           <Command.Group heading="Rooms and Bookings" className='text-sm mb-3 text-stone-400'>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <Plus/> New Reservation...
-            </Command.Item>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-             <Bed /> Manage Rooms...
-            </Command.Item>
+            <Link href='/dashboard/rooms/new' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Plus/> New Reservation...
+              </Command.Item>
+            </Link>
+            <Link href='/dashboard/rooms' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Bed /> Manage Rooms...
+              </Command.Item>
+            </Link>
           </Command.Group>
 
           {/* Users group */}
           <Command.Group heading="Users" className='text-sm mb-3 text-stone-400'>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <Users/> Manage Users
-            </Command.Item>
+            <Link href='/dashboard/users' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Users/> Manage Users
+              </Command.Item>
+            </Link>
           </Command.Group>
 
           {/* Settings group */}
           <Command.Group heading="Settings" className='text-sm mb-3 text-stone-400'>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <Settings /> Update username...
-            </Command.Item>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            > 
-              <Settings /> Update email & password...
-            </Command.Item>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            > 
-              <Settings /> Update avatar...
-            </Command.Item>
+            <Link href='/dashboard/settings' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Settings /> Update username...
+              </Command.Item>
+            </Link>
+            <Link href='/dashboard/settings' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Settings /> Update email & password...
+              </Command.Item>
+            </Link>
+            <Link href='/dashboard/settings' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Settings /> Update avatar...
+              </Command.Item>
+            </Link>
           </Command.Group>
 
           {/* Help group */}
           <Command.Group heading="Help" className='text-sm mb-3 text-stone-400'>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <Mail /> Contact Support...
-            </Command.Item>
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <FileText /> Search docs...
-            </Command.Item>
-            
-            <Command.Item
-              className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
-            >
-              <MessageCircle /> Send Feedback...
-            </Command.Item>
+            <Link href='/dashboard/help' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <Mail /> Contact Support...
+              </Command.Item>
+            </Link>
+            <Link href='/docs' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <FileText /> Search docs...
+              </Command.Item>
+            </Link>
+            <Link href='/feedback' passHref>
+              <Command.Item
+                className='flex cursor-pointer transition-colors p-2 text-sm text-stone-950 hover:bg-stone-200 rounded-md items-center gap-2'
+                onSelect={() => setOpen(false)}
+              >
+                <MessageCircle /> Send Feedback...
+              </Command.Item>
+            </Link>
           </Command.Group>
 
           
@@ -137,4 +168,4 @@ const CommandMenu = ({open, setOpen}) => {
   )
 };
 
-export default Search
+export default Search;

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/tokenUtils";
 
+/**
+ * Middleware function to handle authentication and redirection.
+ * @param {Request} req - The incoming request object.
+ * @returns {Promise<NextResponse>} A promise that resolves to the NextResponse object.
+ */
 export async function middleware(req) {
 	const { pathname } = req.nextUrl;
 
