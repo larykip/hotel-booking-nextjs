@@ -113,7 +113,7 @@ export const calendarData = {
 			bookings: [
 				{
 					user: "Yasin Arafat",
-					avatar: "/placeholder.svg",
+					avatar: `https://api.dicebear.com/9.x/notionists/svg?seed=${Math.random().toString(36).substring(7)}`,
 				},
 			],
 		},
@@ -123,7 +123,7 @@ export const calendarData = {
 			bookings: [
 				{
 					user: "Yasin Arafat",
-					avatar: "/placeholder.svg",
+					avatar: `https://api.dicebear.com/9.x/notionists/svg?seed=${Math.random().toString(36).substring(7)}`,
 				},
 			],
 		},
@@ -133,7 +133,7 @@ export const calendarData = {
 			bookings: [
 				{
 					user: "Faruk Ahmad",
-					avatar: "/placeholder.svg",
+					avatar: `https://api.dicebear.com/9.x/notionists/svg?seed=${Math.random().toString(36).substring(7)}`,
 				},
 			],
 		},
