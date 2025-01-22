@@ -1,14 +1,31 @@
+"use client";
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownRight, ArrowUpRight, Dam, HousePlus, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { statsData } from "@/lib/testData/dummyData";
+import { fetchStatsData } from "@/lib/testData/mockApi";
 
 /**
  * StatCards component that displays key statistics of the hotel.
  * @returns {JSX.Element} The rendered StatCards component.
  */
 export const StatCards = () => {
+	const [statsData, setStatsData] = React.useState(null);
+
+	React.useEffect(() => {
+		const fetchStatsDataAsync = async () => {
+			const data = await fetchStatsData();
+			setStatsData(data);
+		};
+
+		fetchStatsDataAsync();
+	}, []);
+
+	if (!statsData) {
+		return <div>Loading...</div>;
+	}
+
 	const totalRooms = statsData.occupancy.vacant + statsData.occupancy.occupied + statsData.occupancy.notReady;
 	const vacantPercentage = (statsData.occupancy.vacant / totalRooms) * 100;
 	const occupiedPercentage = (statsData.occupancy.occupied / totalRooms) * 100;
@@ -45,7 +62,7 @@ export const StatCards = () => {
 							<ArrowDownRight className="ml-1 h-4 w-4 text-red-600" />
 						</div>
 						<div>
-							<p className="text-sm text-gray-500">Arrival</p>
+							<p className="text-sm text-gray-500">Departure</p>
 							<p className="flex items-center text-2xl font-bold text-red-600">{statsData.reservations.departure}</p>
 						</div>
 					</div>
