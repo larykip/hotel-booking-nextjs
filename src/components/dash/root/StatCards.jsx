@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownRight, ArrowUpRight, Dam, HousePlus, School } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { statsData } from "@/lib/mockApi/dummyData";
+import { statsData } from "@/lib/testData/dummyData";
 
 export const StatCards = () => {
 	const totalRooms = statsData.occupancy.vacant + statsData.occupancy.occupied + statsData.occupancy.notReady;

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { fetchCalendarData } from "@/lib/mockApi/mockApi";
+import { fetchCalendarData } from "@/lib/testData/mockApi";
 
 const CalendarView = () => {
   const [bookings, setBookings] = useState([]);

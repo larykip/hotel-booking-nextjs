@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { fetchBookingGraphData } from "@/lib/mockApi/mockApi";
+import { fetchBookingGraphData } from "@/lib/testData/mockApi";
 
 const CustomTooltip = ({ active, payload, label }) => {
 	if (active && payload && payload.length) {

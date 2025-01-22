@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
-import { ScrollArea } from "../ui/scroll-area";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Badge } from "../ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { BedDouble, CreditCard, Hotel, Users } from "lucide-react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
 
 const BookingSheet = ({ room, isOpen, onClose }) => {
