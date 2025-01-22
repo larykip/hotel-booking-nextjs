@@ -1,18 +1,10 @@
 "use client";
 
-import { Button } from "@components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
-import { CreditCard, LifeBuoy, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { CreditCard, LifeBuoy, LogOut, Settings, User } from "lucide-react";
 
 const SignInDropDown = ({ handleLogout, user }) => {
   return (
@@ -45,14 +37,14 @@ const SignInDropDown = ({ handleLogout, user }) => {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem >
-                        <Link href="/" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
+                        <Link href="/dashboard/booking" className="flex items-center gap-2"><CreditCard className="h-4 w-4" /> My Bookings</Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
-                        <Link href="/" className="flex items-center gap-2"><Settings className="h-4 w-4" /> Settings</Link>
+                        <Link href="/dashboard/settings" className="flex items-center gap-2"><Settings className="h-4 w-4" /> Settings</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <Link href="/" className="flex items-center gap-2"><LifeBuoy className="h-4 w-4" /> Support</Link>
+                        <Link href="/dashboard/help" className="flex items-center gap-2"><LifeBuoy className="h-4 w-4" /> Support</Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
 

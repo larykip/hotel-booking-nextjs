@@ -1,10 +1,9 @@
 "use client";
 
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
 import Logo from './Logo';
 import SignUp from './SignUp';
 import SignInDropDown from './SignInDropDown';
+import { useAuth } from '@/hooks/useAuth';
 
 const Navbar = () => {
   const { isLoggedIn, user, handleLogout } = useAuth();
