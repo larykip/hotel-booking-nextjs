@@ -9,7 +9,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 		return (
 			<div className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
 				<p className="font-medium">{label}</p>
-        <p className="text-sm text-green-600">Bookings: {payload[1].value}</p>
+				<p className="text-sm text-green-600">Bookings: {payload[1].value}</p>
 				<p className="text-sm text-blue-600">Occupancy: {payload[0].value}%</p>
 				<p className="text-sm text-purple-600">Revenue: KES {payload[2].value}</p>
 			</div>
@@ -18,6 +18,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 	return null;
 };
 
+/**
+ * ActivityGraph component that displays a graph of booking activities.
+ * @returns {JSX.Element} The rendered ActivityGraph component.
+ */
 const ActivityGraph = () => {
 	const [bookingGraphData, setBookingGraphData] = useState([]);
 
@@ -31,23 +35,18 @@ const ActivityGraph = () => {
 	}, []);
 
 	return (
-		<div className="overflow-hidden rounded-lg border border-stone-300 bg-white ">
+		<div className="overflow-hidden rounded-lg border border-stone-300 bg-white">
 			<div className="px-4 py-8">
 				<h3 className="font-medium">Weekly Performance</h3>
 				<p className="text-sm text-gray-500">Occupancy, bookings and revenue trends</p>
 			</div>
-      
+
 			<div className="h-80 rounded-lg bg-white px-4 pb-6">
 				<ResponsiveContainer width="100%" height="100%">
 					<ComposedChart data={bookingGraphData}>
 						<CartesianGrid strokeDasharray="3 3" className="stroke-stone-200" />
 						<XAxis dataKey="name" padding={{ left: 0, right: 0 }} tick={{ fill: "#6b7280" }} />
-						<YAxis
-              yAxisId="left"
-              tick={{ fill: "#6b7280" }}
-              domain={[0, 100]}
-              label={{ value: "Occupancy %", angle: -90, position: "insideLeft", fill: "#6b7280" }}
-            />
+						<YAxis yAxisId="left" tick={{ fill: "#6b7280" }} domain={[0, 100]} label={{ value: "Occupancy %", angle: -90, position: "insideLeft", fill: "#6b7280" }} />
 						<YAxis
 							yAxisId="right"
 							orientation="right"

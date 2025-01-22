@@ -27,6 +27,10 @@ const getWeatherIcon = (condition) => {
 	return <IconComponent className="h-5 w-5" />;
 };
 
+/**
+ * DashHeader component that displays the header for the dashboard with user actions.
+ * @returns {JSX.Element} The rendered DashHeader component.
+ */
 const DashHeader = () => {
 	const { user, handleLogout, loading } = useAuth();
 	const [weather, setWeather] = useState(null);

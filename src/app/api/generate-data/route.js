@@ -1,6 +1,10 @@
 import { generateFakeData } from "@/lib/generateFakeData";
 import { NextResponse } from "next/server";
 
+/**
+ * Handles GET requests to generate fake data.
+ * @returns {Promise<NextResponse>} A promise that resolves to the response indicating success or failure.
+ */
 export async function GET() {
 	try {
 		await generateFakeData();

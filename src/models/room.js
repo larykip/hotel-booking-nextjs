@@ -31,8 +31,8 @@ const roomSchema = new Schema({
         enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE']
     }
     
-}, { timestamps: true })
+}, { timestamps: true });
 
-const Room = mongoose.models.Room || mongoose.model('Room', roomSchema)
+const Room = mongoose.models.Room || mongoose.model('Room', roomSchema);
 
 export default Room;

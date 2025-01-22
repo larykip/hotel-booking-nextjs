@@ -4,8 +4,12 @@ import { Command } from 'cmdk';
 import { useEffect, useState } from 'react';
 import { Bed, FileText, Mail, MessageCircle, Plus, SearchIcon, Settings, Users } from 'lucide-react';
 
+/**
+ * Search component that provides a search functionality within the sidebar.
+ * @returns {JSX.Element} The rendered Search component.
+ */
 const Search = () => {
-  const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -137,4 +141,4 @@ const CommandMenu = ({open, setOpen}) => {
   )
 };
 
-export default Search
+export default Search;

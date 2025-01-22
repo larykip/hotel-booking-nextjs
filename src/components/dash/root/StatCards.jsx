@@ -4,6 +4,10 @@ import { ArrowDownRight, ArrowUpRight, Dam, HousePlus, School } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { statsData } from "@/lib/testData/dummyData";
 
+/**
+ * StatCards component that displays key statistics of the hotel.
+ * @returns {JSX.Element} The rendered StatCards component.
+ */
 export const StatCards = () => {
 	const totalRooms = statsData.occupancy.vacant + statsData.occupancy.occupied + statsData.occupancy.notReady;
 	const vacantPercentage = (statsData.occupancy.vacant / totalRooms) * 100;

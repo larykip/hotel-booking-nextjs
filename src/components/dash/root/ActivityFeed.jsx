@@ -7,6 +7,10 @@ import { generateFakeActivities } from "@/lib/testData/generateFakeData";
 
 const activities = generateFakeActivities(10);
 
+/**
+ * ActivityFeed component that displays recent activities.
+ * @returns {JSX.Element} The rendered ActivityFeed component.
+ */
 const ActivityFeed = () => {
 	return (
 		<Card>
@@ -16,7 +20,7 @@ const ActivityFeed = () => {
 					View all
 				</Button>
 			</CardHeader>
-      
+
 			<CardContent>
 				<div className="space-y-4">
 					{activities.map((activity, i) => (

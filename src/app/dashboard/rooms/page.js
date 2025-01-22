@@ -1,56 +1,59 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BookingSheet from '@/components/dash/rooms/BookingSheet';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { CalendarIcon, Check, HousePlus, Plus, SearchIcon } from 'lucide-react';
+import BookingSheet from "@/components/dash/rooms/BookingSheet";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Check, HousePlus, Plus, SearchIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-
+/**
+ * RoomsPage component that displays available rooms and booking options.
+ * @returns {JSX.Element} The rendered RoomsPage component.
+ */
 const RoomsPage = () => {
-  const [date, setDate] = useState(new Date()); // State for the selected date
-  const [status, setStatus] = useState(""); // State for the selected room status
-  const [roomType, setRoomType] = useState(""); // State for the selected room type
-  const [selectedRoom, setSelectedRoom] = useState(null); // State for the currently selected room
-  const [isBookingOpen, setIsBookingOpen] = useState(false); // State for the booking sheet visibility
-  const [roomTypes, setRoomTypes] = useState([]); // State for the list of room types
-  const [isLoading, setIsLoading] = useState(true); // State for the loading indicator
+	const [date, setDate] = useState(new Date()); // State for the selected date
+	const [status, setStatus] = useState(""); // State for the selected room status
+	const [roomType, setRoomType] = useState(""); // State for the selected room type
+	const [selectedRoom, setSelectedRoom] = useState(null); // State for the currently selected room
+	const [isBookingOpen, setIsBookingOpen] = useState(false); // State for the booking sheet visibility
+	const [roomTypes, setRoomTypes] = useState([]); // State for the list of room types
+	const [isLoading, setIsLoading] = useState(true); // State for the loading indicator
 
-  useEffect(() => {
-    const fetchRooms = async () => {
-      setIsLoading(true); // Set loading state to true
-      try {
-        const response = await fetch('/api/rooms');
-        if (!response.ok) {
-          throw new Error('Failed to fetch rooms');
-        }
-        const data = await response.json();
-        setRoomTypes(data);
-      } catch (error) {
-        console.error('Error fetching rooms:', error);
-      } finally {
-        setIsLoading(false); // Set loading state to false after fetching
-      }
-    }
-    fetchRooms()
-  }, [])
+	useEffect(() => {
+		const fetchRooms = async () => {
+			setIsLoading(true); // Set loading state to true
+			try {
+				const response = await fetch("/api/rooms");
+				if (!response.ok) {
+					throw new Error("Failed to fetch rooms");
+				}
+				const data = await response.json();
+				setRoomTypes(data);
+			} catch (error) {
+				console.error("Error fetching rooms:", error);
+			} finally {
+				setIsLoading(false); // Set loading state to false after fetching
+			}
+		};
+		fetchRooms();
+	}, []);
 
-  /**
-   * Handles the booking process for a selected room.
-   * @param {Object} room - The room to be booked.
-   */
-  const handleBookNow = (room) => {
-    setSelectedRoom(room);
-    setIsBookingOpen(true);
-  }
+	/**
+	 * Handles the booking process for a selected room.
+	 * @param {Object} room - The room to be booked.
+	 */
+	const handleBookNow = (room) => {
+		setSelectedRoom(room);
+		setIsBookingOpen(true);
+	};
 
-  return (
+	return (
 		<section className="h-full bg-stone-200 p-2">
 			<div className="mx-auto w-full rounded-lg bg-white p-8">
 				{/* - - - Title Bar Start - - - - - - - - - - - - - - - - - - - - -  */}
@@ -214,8 +217,8 @@ const RoomsPage = () => {
 				<BookingSheet room={selectedRoom} isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
 			</div>
 		</section>
-  );
-}
+	);
+};
 
 /**
  * Returns the color class based on the room status.
@@ -237,11 +240,11 @@ function getStatusColor(status) {
 		default:
 			return "bg-gray-500";
 	}
-};
+}
 
 // Skeleton component for loading state
 const BookingSkeleton = () => (
-	<div className="w-[450px] relative animate-pulse gap-4 overflow-hidden rounded-lg border bg-gray-100 p-4">
+	<div className="relative w-[450px] animate-pulse gap-4 overflow-hidden rounded-lg border bg-gray-100 p-4">
 		<div className="absolute left-0 top-0 h-full w-1 bg-gray-300" />
 
 		<div className="flex justify-between">
@@ -249,9 +252,9 @@ const BookingSkeleton = () => (
 			<Skeleton className="h-4 w-1/6 rounded-full bg-gray-300" />
 		</div>
 
-		<Skeleton className="mb-4 h-[100px] w-full mx-auto rounded-lg bg-gray-300" />
+		<Skeleton className="mx-auto mb-4 h-[100px] w-full rounded-lg bg-gray-300" />
 
-		<div className="flex justify-between items-center">
+		<div className="flex items-center justify-between">
 			<Skeleton className="h-4 w-1/4 rounded-lg bg-gray-300" />
 			<Skeleton className="h-10 w-1/4 rounded-lg bg-gray-300" />
 		</div>
