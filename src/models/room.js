@@ -26,11 +26,9 @@ const roomSchema = new Schema({
         required: true
     },
     MaxGuests: { type: Number, required: true },
-    activeBooking: { type: Schema.Types.ObjectId, ref: 'Booking' },
     status: {
         type: String,
-        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE'],
-        default: 'AVAILABLE'
+        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE']
     }
     
 }, { timestamps: true });
