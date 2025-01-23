@@ -26,13 +26,29 @@ const roomSchema = new Schema({
         required: true
     },
     MaxGuests: { type: Number, required: true },
+    activeBooking: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Booking'
+    },
     status: {
         type: String,
-        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE']
+        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE'],
+        default: 'AVAILABLE'
     }
     
-}, { timestamps: true });
+}, { timestamps: true })
 
-const Room = mongoose.models.Room || mongoose.model('Room', roomSchema);
+// Add a pre-find middleware to always populate activeBooking
+roomSchema.pre('find', function() {
+    this.populate({
+        path: 'activeBooking',
+        populate: {
+            path: 'customer',
+            select: 'firstName lastName emailAddress'
+        }
+    });
+});
+
+const Room = mongoose.models.Room || mongoose.model('Room', roomSchema)
 
 export default Room;
