@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcryptjs";
 import connectMongoDB from "../mongodb.js";
-import User from "@/models/user.js";
-import Room from "@/models/room.js";
-import Booking from "@/models/booking.js";
-import Payment from "@/models/payment.js";
+import User from "../../models/user.js";
+import Room from "../../models/room.js";
+import Booking from "../../models/booking.js";
+import Payment from "../../models/payment.js";
 
 const NUM_USERS = 20;
 const NUM_ROOMS = 20;
