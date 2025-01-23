@@ -81,11 +81,12 @@ const RoomCard = ({ room, onBookNow }) => {
 
 const RoomsPage = () => {
   const [date, setDate] = useState(new Date());
-  const [status, setStatus] = useState("");
-  const [roomType, setRoomType] = useState("");
+  const [status, setStatus] = useState("ALL");
+  const [roomType, setRoomType] = useState("ALL");
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [roomTypes, setRoomTypes] = useState([]);
+  const [filteredRooms, setFilteredRooms] = useState([]);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -96,6 +97,7 @@ const RoomsPage = () => {
         }
         const data = await response.json();
         setRoomTypes(data);
+        setFilteredRooms(data);
       } catch (error) {
         console.error('Error fetching rooms:', error);
       }
@@ -121,6 +123,19 @@ const RoomsPage = () => {
     setSelectedRoom(transformedRoom);
     setIsBookingOpen(true);
   }
+
+  const applyFilters = () => {
+    const filtered = roomTypes.map(type => ({
+      ...type,
+      rooms: type.rooms.filter(room => {
+        return (
+          (status !== 'ALL' ? room.status === status : true) &&
+          (roomType !== 'ALL' ? room.type === roomType : true)
+        );
+      })
+    }));
+    setFilteredRooms(filtered);
+  };
 
   return (
     <section className='bg-stone-200 p-2 h-full'>
@@ -177,14 +192,14 @@ const RoomsPage = () => {
               <SelectValue placeholder='Status'/>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='All'>All</SelectItem>
-              <SelectItem value='Available'>Available</SelectItem>
-              <SelectItem value='Occupied'>Occupied</SelectItem>
-              <SelectItem value='Maintenance'>Maintenance</SelectItem>
-              <SelectItem value='Cleaning'>Cleaning</SelectItem>
+              <SelectItem value='ALL'>All</SelectItem>
+              <SelectItem value='AVAILABLE'>Available</SelectItem>
+              <SelectItem value='OCCUPIED'>Occupied</SelectItem>
+              <SelectItem value='MAINTENANCE'>Maintenance</SelectItem>
+              <SelectItem value='CLEANING'>Cleaning</SelectItem>
             </SelectContent>
           </Select>
-          {/* --- Status filter start --- */}
+          {/* --- Status filter end --- */}
 
           {/* --- Room type filter start --- */}
           <Select value={roomType} onValueChange={setRoomType}>
@@ -192,16 +207,16 @@ const RoomsPage = () => {
               <SelectValue placeholder='Room type' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='All'>All</SelectItem>
+              <SelectItem value='ALL'>All</SelectItem>
               {roomTypes.map((type) => (
                 <SelectItem key={type.name} value={type.name}>{type.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {/* --- Room type filter start --- */}
+          {/* --- Room type filter end --- */}
 
           {/* --- Apply filter button --- */}
-          <Button variant='outline' className=''>
+          <Button variant='outline' onClick={applyFilters}>
             <Check className='w-4 h-4'/> Apply filters
           </Button>
 
@@ -210,12 +225,12 @@ const RoomsPage = () => {
 
         {/* - - - Room Listing start - - - - - - - - - - - - - - - - - - - - -  */}
         <div className='space-y-8'>
-          {roomTypes.map((type) => (
+          {filteredRooms.map((type) => (
             <div key={type.name}>
               <div className='flex items-center gap-2 mb-4'>
                 <h2 className='text-lg font-semibold'>{type.name}</h2>
                 <Badge variant='secondary' className='bg-gray-100'>
-                  {type.availableCount || 0} Available / {type.rooms.length} Total
+                  {type.rooms.filter(room => room.status === 'AVAILABLE').length} Available / {type.rooms.length} Total
                 </Badge>
               </div>
 
