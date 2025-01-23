@@ -28,7 +28,8 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         lastName: '',
         adults: 1,
         children: 0,
-        specialRequests: ''
+        specialRequests: '',
+        nights: '1'
     });
 
     const handleInputChange = (e) => {
@@ -299,26 +300,29 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <div className="grid gap-2">
                                         <Label>Nights</Label>
-                                        <Input type='number' defaultValue='1'/>
+                                        <Input 
+                                            name="nights"
+                                            type='number'
+                                            value={formData.nights}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
                                     <div className="grid gap-2">
                                         <Label>Adults</Label>
                                         <Input 
                                             name="adults"
+                                            type='number'
                                             value={formData.adults}
                                             onChange={handleInputChange}
-                                            type='number'
-                                            defaultValue='2'
                                         />
                                     </div>
                                     <div className="grid gap-2">
                                         <Label>Children</Label>
                                         <Input 
                                             name="children"
+                                            type='number'
                                             value={formData.children}
                                             onChange={handleInputChange}
-                                            type='number'
-                                            defaultValue='0'
                                         />
                                     </div>
                                 </div>
