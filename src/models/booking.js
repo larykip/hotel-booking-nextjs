@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Room from '@/models/room'; 
+import Room from './room.js';
 
 const bookingSchema = new mongoose.Schema({
     room: {
