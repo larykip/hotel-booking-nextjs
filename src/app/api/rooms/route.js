@@ -15,15 +15,26 @@ export async function GET() {
         // First, register the Booking model implicitly by accessing it
         await Booking.findOne();
 
+        // Explicitly populate the activeBooking and its customer
         const rooms = await Room.find()
             .populate({
                 path: 'activeBooking',
+                model: 'Booking',
                 populate: {
                     path: 'customer',
+                    model: 'User',
                     select: 'firstName lastName emailAddress'
                 }
             })
             .lean();
+
+        // Add debug logging for each room with booking
+        rooms.forEach(room => {
+            if (room.status !== 'AVAILABLE') {
+                console.log(`Room ${room.number} status: ${room.status}`);
+                console.log(`Room ${room.number} booking:`, room.activeBooking);
+            }
+        });
 
         // Add detailed debug logging for rooms with bookings
         rooms.filter(room => room.status === 'OCCUPIED' || room.status === 'BOOKED')
