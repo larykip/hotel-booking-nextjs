@@ -32,8 +32,13 @@ const roomSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'CLEANING', 'MAINTENANCE'],
+        enum: ['AVAILABLE', 'OCCUPIED', 'BOOKED', 'MAINTENANCE'],
         default: 'AVAILABLE'
+    },
+    secondaryStatus: {
+        type: String,
+        enum: ['NONE', 'CLEANING'],
+        default: 'NONE'
     }
     
 }, { timestamps: true })

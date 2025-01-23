@@ -25,6 +25,18 @@ export async function GET() {
             })
             .lean();
 
+        // Add detailed debug logging for rooms with bookings
+        rooms.filter(room => room.status === 'OCCUPIED' || room.status === 'BOOKED')
+            .forEach(room => {
+                console.log(`\nDetailed Room Status Check:
+                    Room Number: ${room.roomNumber}
+                    Status: ${room.status}
+                    Has activeBooking: ${!!room.activeBooking}
+                    Booking Details: ${JSON.stringify(room.activeBooking, null, 2)}
+                    Customer Details: ${JSON.stringify(room.activeBooking?.customer, null, 2)}
+                `);
+            });
+
         console.log('Rooms fetched:', 
             rooms.find(room => room.activeBooking)
         );
@@ -40,20 +52,26 @@ export async function GET() {
                 MaxGuests: room.MaxGuests,
                 price: room.price,
                 status: room.status,
+                secondaryStatus: room.secondaryStatus,
+                statusDisplay: room.secondaryStatus === 'CLEANING' ? 
+                    `${room.status} (Cleaning)` : room.status,
                 type: room.roomType,
                 description: room.description,
                 amenities: room.amenities || [],
-                activeBooking: room.activeBooking ? {
-                    id: room.activeBooking._id.toString(),
-                    checkIn: room.activeBooking.checkInDate,
-                    checkOut: room.activeBooking.checkOutDate
-                } : null,
-                guest: room.activeBooking && room.activeBooking.customer ? {
-                    name: `${room.activeBooking.customer.firstName || ''} ${room.activeBooking.customer.lastName || ''}`.trim(),
-                    email: room.activeBooking.customer.emailAddress,
-                    checkIn: room.activeBooking.checkInDate,
-                    checkOut: room.activeBooking.checkOutDate
-                } : null
+                // Only include booking/guest info if room is not available
+                ...(room.status !== "AVAILABLE" && {
+                    activeBooking: room.activeBooking ? {
+                        id: room.activeBooking._id.toString(),
+                        checkIn: room.activeBooking.checkInDate,
+                        checkOut: room.activeBooking.checkOutDate
+                    } : null,
+                    guest: room.activeBooking?.customer ? {
+                        name: `${room.activeBooking.customer.firstName || ''} ${room.activeBooking.customer.lastName || ''}`.trim(),
+                        email: room.activeBooking.customer.emailAddress,
+                        checkIn: room.activeBooking.checkInDate,
+                        checkOut: room.activeBooking.checkOutDate
+                    } : null
+                })
             };
 
             // Debug log for rooms with bookings
@@ -76,16 +94,23 @@ export async function GET() {
             return acc;
         }, []);
 
+        // Add count of available rooms to each type
+        const groupedRoomsWithCounts = groupedRooms.map(group => ({
+            ...group,
+            availableCount: group.rooms.filter(room => room.status === "AVAILABLE").length,
+            rooms: group.rooms
+        }));
+
         // Debug log with more details
         console.log('Grouped rooms details:', 
-            groupedRooms.map(group => ({
+            groupedRoomsWithCounts.map(group => ({
                 name: group.name,
                 roomCount: group.rooms.length,
                 sampleRoom: group.rooms[0]
             }))
         );
 
-        return NextResponse.json(groupedRooms);
+        return NextResponse.json(groupedRoomsWithCounts);
     } catch (error) {
         console.error('Error fetching rooms:', error);
         return NextResponse.json({ error: 'Failed to fetch rooms' }, { status: 500 });

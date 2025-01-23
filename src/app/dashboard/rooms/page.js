@@ -10,23 +10,74 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, HousePlus, Plus, SearchIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { getStatusColors } from '@/lib/roomStatusColors';
 
-function getStatusColor(status) {
-  switch (status) {
-    case "AVAILABLE":
-      return "bg-green-500";
-    case "OCCUPIED":
-      return "bg-red-500";
-    case "MAINTENANCE":
-      return "bg-yellow-500";
-    case "CLEANING":
-      return "bg-blue-500";
-    case "BOOKED":
-      return "bg-purple-500";
-    default:
-      return "bg-gray-500";
-  }
-}
+const RoomCard = ({ room, onBookNow }) => {
+  const statusColors = getStatusColors(room.status, room.secondaryStatus);
+  
+  return (
+    <div className={`border rounded-lg p-4 relative overflow-hidden ${statusColors.primary}/10`}>
+      {/* Primary status indicator */}
+      <div className={`absolute top-0 left-0 w-1 h-full ${statusColors.primary}`} />
+      
+      {/* Secondary status indicator */}
+      {statusColors.secondary && (
+        <div className={`absolute top-0 left-1 w-1 h-full ${statusColors.secondary} opacity-50`} />
+      )}
+      
+      <div className='mb-4'>
+        <div className='flex items-center justify-between'>
+          <div>
+            <h3 className='font-semibold'>Room {room.roomNumber}</h3>
+            <div className='text-sm text-gray-500'>
+              {room.MaxGuests} Guests • {room.floorNumber}
+            </div>
+          </div>
+          <Badge className={`${statusColors.primary} bg-opacity-90`}>
+            {statusColors.text}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Customer Display section */}
+      <div className="flex justify-center mb-4 h-16">
+        {room.status === "AVAILABLE" ? (
+          <h2 className='flex flex-col items-center text-gray-400 font-semibold'>
+            <HousePlus className='w-10 h-10' />
+            Room Available
+          </h2>
+        ) : (
+          room.guest && (
+            <div className="flex flex-col justify-center text-center h-16 w-full">
+              <p className="font-semibold">{room.guest.name}</p>
+              {room.guest.checkIn && room.guest.checkOut && (
+                <p className="text-sm text-gray-500">
+                  {format(new Date(room.guest.checkIn), 'MMM d, yyyy')} - 
+                  {format(new Date(room.guest.checkOut), 'MMM d, yyyy')}
+                </p>
+              )}
+            </div>
+          )
+        )}
+      </div>
+
+      {/* Bottom section */}
+      <div className='flex bottom-0 items-center justify-between border-t-2 border-stone-200'>
+        <Button
+          variant='link'
+          className='text-teal-500 px-0'
+          onClick={() => onBookNow(room)}
+        >
+          {room.status === "AVAILABLE" ? "Book now" : "View details"}
+        </Button>
+        <div className='flex items-center text-right gap-1'>
+          <div className='text-sm text-gray-500'>KES</div>
+          <div className='font-semibold'>{room.price}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const RoomsPage = () => {
   const [date, setDate] = useState(new Date());
@@ -61,6 +112,7 @@ const RoomsPage = () => {
         floor: room.floorNumber,
         price: room.price,
         status: room.status,
+        secondaryStatus: room.secondaryStatus || 'NONE', // Add this line
         MaxGuests: room.MaxGuests,
         guest: room.guest,
         description: room.description,
@@ -163,72 +215,17 @@ const RoomsPage = () => {
               <div className='flex items-center gap-2 mb-4'>
                 <h2 className='text-lg font-semibold'>{type.name}</h2>
                 <Badge variant='secondary' className='bg-gray-100'>
-                  {/* TODO: Should display available rooms currently shows total rooms */}
-                  {type.rooms.length} Rooms available
+                  {type.availableCount || 0} Available / {type.rooms.length} Total
                 </Badge>
               </div>
 
               <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                 {type.rooms.map((room) => (
-                  <div key={room.id} className={`border rounded-lg p-4 relative overflow-hidden ${getStatusColor(room.status)}/10`}>
-                    <div className={`absolute top-0 left-0 w-1 h-full ${getStatusColor(room.status)}`} />
-                    {/* - - - Room details section end - - - - - - - - - - - - - - - - - - - - -  */}
-                    <div className='mb-4'>
-                      <div className='flex items-center justify-between'>
-                        <div>
-                          <h3 className='font-semibold'>Room {room.roomNumber}</h3>
-                          <div className='text-sm text-gray-500'>
-                            {room.MaxGuests} Guests • {room.floorNumber}
-                          </div>
-                        </div>
-                        <Badge className={`${getStatusColor(room.status)} bg-opacity-90 hover:${getStatusColor(room.status)}`}>
-                          {room.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    {/* - - - Room details section end - - - - - - - - - - - - - - - - - - - - -  */}
-
-
-                    {/* - - - Customer Display section start - - - - - - - - - - - - - - - - - - - - -  */}
-                    {/* Display icon if room available or customer details if booked/occupied */}
-                    <div className="flex justify-center mb-4 h-16">
-                    {room.status === "AVAILABLE" ? (
-                      <h2 className='flex flex-col items-center text-gray-400 font-semibold'>
-                        <HousePlus className='w-10 h-10' />
-                        Room Available
-                      </h2>
-                      
-                    ) : (
-                      <div className="flex flex-col justify-center text-center h-16 w-full">
-                        <p className="font-semibold">{room.guest?.name || "N/A"}</p>
-                        {room.customer && (
-                          <p className="text-sm text-gray-500">
-                            {format(new Date(room.customer.checkIn), 'MMM d, yyyy')} - {format(new Date(room.customer.checkOut), 'MMM d, yyyy')}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    </div>
-                    {/* - - - Customer Display section end - - - - - - - - - - - - - - - - - - - - -  */}
-
-                    {/* - - - Book button & Price section start - - - - - - - - - - - - - - - - - - - - -  */}
-                    <div className='flex bottom-0 items-center justify-between border-t-2 border-stone-200'>
-                      {/* TODO: wrong data is probably getting sent in handleBookNow */}
-                      <Button
-                        variant='link'
-                        className='text-teal-500 px-0'
-                        onClick={() => handleBookNow(room)}
-                      >
-                        {room.status === "AVAILABLE" ? "Book now" : "View details"}
-                      </Button>
-                      <div className='flex items-center text-right gap-1'>
-                        <div className='text-sm text-gray-500'>KES</div>
-                        <div className='font-semibold'>{room.price}</div>
-                      </div>
-                    </div>
-                    {/* - - - Book button & Price section end - - - - - - - - - - - - - - - - - - - - -  */}
-                    
-                  </div>
+                  <RoomCard 
+                    key={room.id} 
+                    room={room} 
+                    onBookNow={handleBookNow}
+                  />
                 ))}
               </div>
 
