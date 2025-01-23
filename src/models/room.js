@@ -54,6 +54,16 @@ roomSchema.pre('find', function() {
     });
 });
 
+roomSchema.pre('findOne', function() {
+    this.populate({
+        path: 'activeBooking',
+        populate: {
+            path: 'customer',
+            select: 'firstName lastName emailAddress'
+        }
+    });
+});
+
 const Room = mongoose.models.Room || mongoose.model('Room', roomSchema)
 
 export default Room;

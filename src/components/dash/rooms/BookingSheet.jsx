@@ -21,7 +21,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [date, setDate] = useState({
         from: new Date(),
-        to: new Date(),
+        to: new Date(new Date().setDate(new Date().getDate() + 1))
     });
     const [formData, setFormData] = useState({
         firstName: '',
@@ -31,6 +31,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         specialRequests: '',
         nights: '1'
     });
+    const [latestBooking, setLatestBooking] = useState(null); // Ensure latestBooking is tracked
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -64,17 +65,25 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        if (checkIn < today) {
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        
+        checkInDate.setHours(0, 0, 0, 0);
+        checkOutDate.setHours(0, 0, 0, 0);
+        
+        if (checkInDate < today) {
             throw new Error("Check-in date cannot be in the past");
         }
-        if (checkOut <= checkIn) {
+        if (checkOutDate.getTime() <= checkInDate.getTime()) {
             throw new Error("Check-out date must be after check-in date");
         }
         
-        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+        const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
         if (nights < 1) {
             throw new Error("Minimum stay is 1 night");
         }
+        
+        return nights;
     };
 
     const handleBookNow = async () => {
@@ -95,25 +104,33 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
 
         try {
             setIsLoading(true);
-            validateDates(date.from, date.to);
+            const nights = validateDates(date.from, date.to);
 
-            // Debug log
+            // Format dates for API
+            const formattedCheckIn = new Date(date.from);
+            const formattedCheckOut = new Date(date.to);
+            formattedCheckIn.setHours(14, 0, 0, 0); // Set check-in time to 2 PM
+            formattedCheckOut.setHours(11, 0, 0, 0); // Set check-out time to 11 AM
+
+            // Debug log for booking details
             console.log('Attempting to book room:', {
                 roomId: room._id,
-                roomNumber: room.roomNumber,
+                roomNumber: room.number,
                 status: room.status,
                 dates: { from: date.from, to: date.to }
             });
 
             const response = await fetch('/api/bookings', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
                     roomId: room._id,
                     customerId: user._id,
-                    checkInDate: date.from,
-                    checkOutDate: date.to,
-                    totalCost: room.price * Math.ceil((date.to - date.from) / (1000 * 60 * 60 * 24)),
+                    checkInDate: formattedCheckIn.toISOString(),
+                    checkOutDate: formattedCheckOut.toISOString(),
+                    totalCost: room.price * nights,
                     guestDetails: {
                         firstName: formData.firstName,
                         lastName: formData.lastName,
@@ -124,13 +141,19 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                 })
             });
 
+            // Error handling
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to create booking');
+            }
+
             const data = await response.json();
-            
             if (!response.ok) {
                 throw new Error(data.error || 'Failed to create booking');
             }
 
             toast.success(data.message || "Room booked successfully");
+            setLatestBooking(data.booking); // Store the newly created booking
             onClose();
             window.location.reload();
         } catch (error) {
@@ -199,11 +222,39 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         }
     };
 
+    const handleCancelBooking = async () => {
+        if (!user) {
+            toast.error("Please login to perform this action");
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            // Use room ID for the cancel endpoint
+            const response = await fetch(`/api/rooms/${room._id}/cancel`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Failed to cancel booking');
+
+            toast.success("Booking cancelled successfully");
+            onClose();
+            window.location.reload();
+        } catch (error) {
+            toast.error(error.message);
+            console.error("Cancel booking error:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const buttonState = getButtonState();
   
-    return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="sm:w-[90%] sm:max-w-[1000px] overflow-y-auto">
+      return (
+        <Sheet open={isOpen} onOpenChange={onClose}>
+            <SheetContent className="sm:w-[90%] sm:max-w-[1000px] overflow-y-auto">
             {/* - - - header section start - - - - - - - - - - - - - - - - - - - - -  */}
             <SheetHeader className='space-y-4 pb-4 border-b'>
                 <div className="flex justify-between items-center">
@@ -488,13 +539,13 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                     </TabsContent>
                     {/* - - - tabs 3 (payment) end - - - - - - - - - - - - - - - - - - - - -  */}
 
-                </ScrollArea>
-            </Tabs>
-            {/* - - - tabs section end - - - - - - - - - - - - - - - - - - - - -  */}
+    </ScrollArea>
+</Tabs>
+{/* - - - tabs section end - - - - - - - - - - - - - - - - - - - - -  */}
 
-            {/* - - - footer section start - - - - - - - - - - - - - - - - - - - - -  */}
+{/* - - - footer section start - - - - - - - - - - - - - - - - - - - - -  */}
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-white">
-                <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
                     <div>
                         <div className="text-sm text-muted-foreground">Total Amount</div>
                         <div className="text-2xl font-semibold">KES {room?.price}</div>
@@ -503,7 +554,11 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
 
                     <div className="flex gap-2">
                         {room?.status !== 'AVAILABLE' && (
-                            <Button variant='outline' className='text-red-500'>
+                            <Button 
+                                variant='outline' 
+                                className='text-red-500'
+                                onClick={handleCancelBooking} // Add onClick handler
+                            >
                                 Cancel reservation
                             </Button>
                         )}
@@ -516,8 +571,8 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                             {buttonState.text}
                         </Button>
                     </div>
+                    </div>
                 </div>
-            </div>
             {/* - - - footer section end - - - - - - - - - - - - - - - - - - - - -  */}
         </SheetContent>
     </Sheet>

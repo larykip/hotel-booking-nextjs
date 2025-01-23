@@ -138,7 +138,7 @@ export async function generateFakeData(options = { clear: false, force: false })
 				checkOutDate,
 				totalCost,
 				paymentStatus: faker.helpers.arrayElement(["pending", "completed", "failed"]),
-				status: room.status === 'OCCUPIED' ? 'checked_in' : 'confirmed',
+				status: room.status === 'OCCUPIED' ? 'CHECKED_IN' : 'CONFIRMED',
 				actualCheckIn: room.status === 'OCCUPIED' ? checkInDate : null
 			});
 			await booking.save();
