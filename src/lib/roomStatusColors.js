@@ -3,7 +3,8 @@ export function getStatusColors(status, secondaryStatus) {
         "AVAILABLE": "bg-green-500",
         "OCCUPIED": "bg-red-500",
         "MAINTENANCE": "bg-yellow-500",
-        "BOOKED": "bg-purple-500"
+        "BOOKED": "bg-purple-500",
+        "CLEANING": "bg-blue-500"
     }[status] || "bg-gray-500";
 
     if (secondaryStatus === 'CLEANING') {
