@@ -3,6 +3,16 @@ import connectMongoDB from "@/lib/mongodb";
 import Room from '@/models/room';
 import Booking from '@/models/booking';
 
+/**
+ * Handles the cancellation of a room booking
+ * 
+ * @route POST /api/rooms/[roomId]/cancel
+ * @param {Object} request - The incoming request object
+ * @param {Object} params - URL parameters containing roomId
+ * @param {string} params.roomId - The ID of the room to cancel booking for
+ * @returns {Object} NextResponse with success/error message and updated room data
+ * @throws {Error} If database operations fail
+ */
 export async function POST(request, { params }) {
     try {
         await connectMongoDB();

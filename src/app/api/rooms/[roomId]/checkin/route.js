@@ -3,6 +3,16 @@ import Room from "@/models/room";
 import Booking from "@/models/booking";
 import { NextResponse } from "next/server";
 
+/**
+ * Handles the check-in process for a booked room
+ * 
+ * @route POST /api/rooms/[roomId]/checkin
+ * @param {Object} request - The incoming request object
+ * @param {Object} params - URL parameters containing roomId
+ * @param {string} params.roomId - The ID of the room to check in
+ * @returns {Object} NextResponse with success/error message and status
+ * @throws {Error} If database operations fail
+ */
 export async function POST(request, { params }) {
     try {
         await connectMongoDB();
