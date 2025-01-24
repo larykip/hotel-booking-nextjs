@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Check, HousePlus, Plus, SearchIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getStatusColors } from '@/lib/roomStatusColors';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const RoomCard = ({ room, onBookNow }) => {
   const statusColors = getStatusColors(room.status, room.secondaryStatus);
@@ -87,9 +88,11 @@ const RoomsPage = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [roomTypes, setRoomTypes] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRooms = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch('/api/rooms');
         if (!response.ok) {
@@ -100,6 +103,9 @@ const RoomsPage = () => {
         setFilteredRooms(data);
       } catch (error) {
         console.error('Error fetching rooms:', error);
+      }
+      finally {
+        setIsLoading(false);
       }
     }
     fetchRooms()
@@ -225,27 +231,41 @@ const RoomsPage = () => {
 
         {/* - - - Room Listing start - - - - - - - - - - - - - - - - - - - - -  */}
         <div className='space-y-8'>
-          {filteredRooms.map((type) => (
-            <div key={type.name}>
-              <div className='flex items-center gap-2 mb-4'>
-                <h2 className='text-lg font-semibold'>{type.name}</h2>
-                <Badge variant='secondary' className='bg-gray-100'>
-                  {type.rooms.filter(room => room.status === 'AVAILABLE').length} Available / {type.rooms.length} Total
-                </Badge>
-              </div>
-
-              <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                {type.rooms.map((room) => (
-                  <RoomCard 
-                    key={room.id} 
-                    room={room} 
-                    onBookNow={handleBookNow}
-                  />
-                ))}
-              </div>
-
+          {isLoading ? (
+            <div className="flex flex-wrap gap-4">
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
+              <BookingSkeleton />
             </div>
-          ))}
+          ) : (
+            filteredRooms.map((type) => (
+              <div key={type.name}>
+                <div className='flex items-center gap-2 mb-4'>
+                  <h2 className='text-lg font-semibold'>{type.name}</h2>
+                  <Badge variant='secondary' className='bg-gray-100'>
+                    {type.rooms.filter(room => room.status === 'AVAILABLE').length} Available / {type.rooms.length} Total
+                  </Badge>
+                </div>
+  
+                <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                  {type.rooms.map((room) => (
+                    <RoomCard 
+                      key={room.id} 
+                      room={room} 
+                      onBookNow={handleBookNow}
+                    />
+                  ))}
+                </div>
+  
+              </div>
+            ))
+          )}
+
         </div>
         {/* - - - Room Listing end - - - - - - - - - - - - - - - - - - - - -  */}
 
@@ -264,41 +284,23 @@ const RoomsPage = () => {
   )
 }
 
-const roomTypes = [
-  { name: "Standard Rooms", rooms: [
-    { id: 101, number: "101", floor: "1st Floor", guests: 2, price: 2000, status: "AVAILABLE" },
-    { id: 102, number: "102", floor: "1st Floor", guests: 2, price: 2000, status: "AVAILABLE" },
-    { id: 103, number: "103", floor: "1st Floor", guests: 2, price: 2000, status: "OCCUPIED", customer: { name: "Kwame Osei", checkIn: "2024-05-15", checkOut: "2024-05-20" } },
-    { id: 104, number: "104", floor: "1st Floor", guests: 2, price: 2000, status: "CLEANING" },
-    { id: 105, number: "105", floor: "1st Floor", guests: 2, price: 2000, status: "OCCUPIED", customer: { name: "Amara Kimani", checkIn: "2024-05-14", checkOut: "2024-05-18" } },
-    { id: 106, number: "106", floor: "1st Floor", guests: 2, price: 2000, status: "BOOKED", customer: { name: "Chibueze Adebayo", checkIn: "2024-05-25", checkOut: "2024-05-30" } }
-  ]},
-  { name: "Junior Suites", rooms: [
-    { id: 110, number: "110", floor: "1st Floor", guests: 4, price: 1000, status: "AVAILABLE" },
-    { id: 111, number: "111", floor: "1st Floor", guests: 4, price: 1000, status: "OCCUPIED", customer: { name: "Zainab Mwangi", checkIn: "2024-05-12", checkOut: "2024-05-22" } },
-    { id: 112, number: "112", floor: "1st Floor", guests: 4, price: 1000, status: "CLEANING" },
-    { id: 113, number: "113", floor: "1st Floor", guests: 4, price: 1000, status: "MAINTENANCE" },
-    { id: 114, number: "114", floor: "1st Floor", guests: 4, price: 1000, status: "CLEANING" },
-    { id: 115, number: "115", floor: "1st Floor", guests: 4, price: 1000, status: "BOOKED", customer: { name: "Olayinka Ndlovu", checkIn: "2024-05-28", checkOut: "2024-06-02" } }
-  ]},
-  { name: "Deluxe", rooms: [
-    { id: 201, number: "201", floor: "2nd Floor", guests: 4, price: 5000, status: "CLEANING" },
-    { id: 202, number: "202", floor: "2nd Floor", guests: 4, price: 5000, status: "OCCUPIED", customer: { name: "Aisha Okafor", checkIn: "2024-05-13", checkOut: "2024-05-20" } },
-    { id: 203, number: "203", floor: "2nd Floor", guests: 4, price: 5000, status: "BOOKED", customer: { name: "Tendai Mutasa", checkIn: "2024-05-25", checkOut: "2024-05-30" } },
-    { id: 204, number: "204", floor: "2nd Floor", guests: 4, price: 5000, status: "AVAILABLE" }
-  ]},
-  { name: "Executive Suites", rooms: [
-    { id: 301, number: "301", floor: "3rd Floor", guests: 2, price: 10000, status: "AVAILABLE" },
-    { id: 302, number: "302", floor: "3rd Floor", guests: 2, price: 10000, status: "OCCUPIED", customer: { name: "Babajide Oluwa", checkIn: "2024-05-14", checkOut: "2024-05-21" } },
-    { id: 303, number: "303", floor: "3rd Floor", guests: 4, price: 12000, status: "AVAILABLE" },
-    { id: 304, number: "304", floor: "3rd Floor", guests: 4, price: 12000, status: "MAINTENANCE" },
-    { id: 305, number: "305", floor: "3rd Floor", guests: 2, price: 10000, status: "BOOKED", customer: { name: "Folami Okoro", checkIn: "2024-06-01", checkOut: "2024-06-06" } }
-  ]},
-  { name: "Presidential Suites", rooms: [
-    { id: 401, number: "401", floor: "4th Floor", guests: 2, price: 200000, status: "AVAILABLE" },
-    { id: 402, number: "402", floor: "4th Floor", guests: 4, price: 200000, status: "BOOKED", customer: { name: "Nnamdi Azikiwe", checkIn: "2024-06-10", checkOut: "2024-06-20" } }
-  ]},
-]
+// Skeleton component for loading state
+const BookingSkeleton = () => (
+	<div className="relative w-[450px] animate-pulse gap-4 overflow-hidden rounded-lg border bg-gray-100 p-4">
+		<div className="absolute left-0 top-0 h-full w-1 bg-gray-300" />
 
+		<div className="flex justify-between">
+			<Skeleton className="mb-4 h-4 w-1/4 rounded-full bg-gray-300" />
+			<Skeleton className="h-4 w-1/6 rounded-full bg-gray-300" />
+		</div>
+
+		<Skeleton className="mx-auto mb-4 h-[100px] w-full rounded-lg bg-gray-300" />
+
+		<div className="flex items-center justify-between">
+			<Skeleton className="h-4 w-1/4 rounded-lg bg-gray-300" />
+			<Skeleton className="h-10 w-1/4 rounded-lg bg-gray-300" />
+		</div>
+	</div>
+);
 
 export default RoomsPage;
