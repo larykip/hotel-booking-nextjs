@@ -111,20 +111,40 @@ const RoomsPage = () => {
     fetchRooms()
   }, [])
 
+  /**
+   * Transforms a room object into the format expected by the BookingSheet component
+   * and opens the booking dialog.
+   * @param {Object} room - The room object to transform
+   * @param {string} room.id - The room's unique identifier
+   * @param {string} room.roomNumber - The room's number
+   * @param {string} room.type - The room type
+   * @param {string} room.floorNumber - The floor number
+   * @param {number} room.price - The room price
+   * @param {string} room.status - The room's current status
+   * @param {string} [room.secondaryStatus] - The room's secondary status (optional)
+   * @param {number} room.MaxGuests - Maximum number of guests allowed
+   * @param {Object} [room.guest] - Current guest information (optional)
+   * @param {string} room.description - Room description
+   * @param {string[]} room.amenities - Array of room amenities
+   */
   const handleBookNow = (room) => {
     // Transform the room data to match the expected format
     const transformedRoom = {
         _id: room.id,
         number: room.roomNumber,
-        type: room.type,
-        floor: room.floorNumber,
+        type: room.type || room.roomType,
+        floor: room.floor || room.floorNumber,
         price: room.price,
         status: room.status,
-        secondaryStatus: room.secondaryStatus || 'NONE', // Add this line
-        MaxGuests: room.MaxGuests,
-        guest: room.guest,
+        secondaryStatus: room.secondaryStatus || 'NONE',
+        guests: room.MaxGuests || room.guests,
+        customer: room.guest ? {
+            name: room.guest.name,
+            checkIn: room.guest.checkIn,
+            checkOut: room.guest.checkOut
+        } : null,
         description: room.description,
-        amenities: room.amenities
+        amenities: room.amenities || []
     };
     setSelectedRoom(transformedRoom);
     setIsBookingOpen(true);

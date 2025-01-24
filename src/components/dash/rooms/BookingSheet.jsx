@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { format } from "date-fns";
 import { getStatusColors } from '@/lib/roomStatusColors';
 
+/**
+ * BookingSheet component for handling room bookings and related operations
+ * @param {Object} props - Component props
+ * @param {Object} props.room - Room details
+ * @param {boolean} props.isOpen - Controls visibility of booking sheet
+ * @param {Function} props.onClose - Callback function to close booking sheet
+ */
 const BookingSheet = ({ room, isOpen, onClose }) => {
     const { user } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +40,37 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
     });
     const [latestBooking, setLatestBooking] = useState(null); // Ensure latestBooking is tracked
 
+    // Reset form when room changes
+    useEffect(() => {
+        if (room) {
+            setFormData(prev => ({
+                ...prev,
+                adults: room.guests || 1,
+                children: 0,
+                nights: '1'
+            }));
+        }
+    }, [room]);
+
+    // Update nights when dates change
+    useEffect(() => {
+        if (date.from && date.to) {
+            const nights = Math.ceil(
+                (new Date(date.to) - new Date(date.from)) / (1000 * 60 * 60 * 24)
+            );
+            setFormData(prev => ({
+                ...prev,
+                nights: nights.toString()
+            }));
+        }
+    }, [date]);
+
+    /**
+     * Handles form input changes
+     * @param {Object} e - Event object
+     * @param {string} e.target.name - Name of the form field
+     * @param {string} e.target.value - New value of the form field
+     */
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -41,7 +79,13 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         }));
     };
 
-    // Helper fn to determine button state
+    /**
+     * Determines the button state based on room status
+     * @returns {Object} Button configuration object
+     * @returns {string} returns.text - Button text
+     * @returns {string} returns.variant - Button variant
+     * @returns {Function} returns.onClick - Button click handler
+     */
     const getButtonState = () => {
         if (room?.secondaryStatus === 'CLEANING') {
             return { text: "Under Cleaning", variant: "secondary", onClick: () => {} };
@@ -61,6 +105,13 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         }
     }
 
+    /**
+     * Validates check-in and check-out dates
+     * @param {Date} checkIn - Check-in date
+     * @param {Date} checkOut - Check-out date
+     * @returns {number} Number of nights
+     * @throws {Error} If dates are invalid
+     */
     const validateDates = (checkIn, checkOut) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -86,6 +137,11 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         return nights;
     };
 
+    /**
+     * Handles the room booking process
+     * @async
+     * @throws {Error} If booking creation fails
+     */
     const handleBookNow = async () => {
         if (!user) {
             toast.error("Please login to book a room");
@@ -93,7 +149,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         }
 
         if (!formData.firstName || !formData.lastName) {
-            console.error("Please enter guest details");
+            toast.error("Please enter guest details");
             return;
         }
 
@@ -122,9 +178,7 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
 
             const response = await fetch('/api/bookings', {
                 method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     roomId: room._id,
                     customerId: user._id,
@@ -152,13 +206,13 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                 throw new Error(data.error || 'Failed to create booking');
             }
 
-            toast.success(data.message || "Room booked successfully");
-            setLatestBooking(data.booking); // Store the newly created booking
+            toast.success("Room booked successfully");
+            setLatestBooking(data.booking);
             onClose();
             window.location.reload();
         } catch (error) {
             toast.error(error.message);
-            console.error("Booking error details:", error);
+            console.error("Booking error:", error);
         } finally {
             setIsLoading(false);
         }
