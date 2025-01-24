@@ -218,6 +218,11 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
         }
     };
 
+    /**
+     * Handles the check-in process for a booked room
+     * @async
+     * @throws {Error} If check-in process fails
+     */
     const handleCheckIn = async () => {
         if (!user) {
             toast.error("Please login to perform this action");
@@ -228,25 +233,30 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
             setIsLoading(true);
             const response = await fetch(`/api/rooms/${room._id}/checkin`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    actualCheckIn: new Date(),
-                })
+                headers: { 'Content-Type': 'application/json' }
             });
 
             const data = await response.json();
-            if (!response.ok) throw new Error(data.error);
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to process check-in');
+            }
 
             toast.success("Check-in successful");
             onClose();
             window.location.reload();
         } catch (error) {
             toast.error(error.message);
+            console.error("Check-in error:", error);
         } finally {
             setIsLoading(false);
         }
     };
 
+    /**
+     * Handles the check-out process for an occupied room
+     * @async
+     * @throws {Error} If check-out process fails
+     */
     const handleCheckOut = async () => {
         if (!user) {
             toast.error("Please login to perform this action");
@@ -257,20 +267,20 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
             setIsLoading(true);
             const response = await fetch(`/api/rooms/${room._id}/checkout`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    actualCheckOut: new Date(),
-                })
+                headers: { 'Content-Type': 'application/json' }
             });
 
             const data = await response.json();
-            if (!response.ok) throw new Error(data.error);
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to process check-out');
+            }
 
             toast.success("Check-out successful");
             onClose();
             window.location.reload();
         } catch (error) {
             toast.error(error.message);
+            console.error("Check-out error:", error);
         } finally {
             setIsLoading(false);
         }
