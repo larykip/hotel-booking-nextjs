@@ -9,7 +9,10 @@
 		"start": "next start",
 		"lint": "next lint",
 		"prettier": "npx prettier ./src --write",
-    "generate": "node src/generateData.js"
+		"generate": "node src/generateData.js",
+		"generate:force": "node src/generateData.js --force",
+		"generate:clear": "node src/generateData.js --clear",
+		"db:validate": "node src/generateData.js --validate"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.0",
@@ -46,6 +49,7 @@
 		"react-dom": "^18",
 		"react-hook-form": "^7.53.0",
 		"recharts": "^2.15.0",
+		"sonner": "^1.7.2",
 		"tailwind-merge": "^2.5.2",
 		"tailwindcss-animate": "^1.0.7",
 		"zod": "^3.23.8"
