@@ -43,15 +43,34 @@ const ActivityGraph = () => {
 
 			<div className="h-80 rounded-lg bg-white px-4 pb-6">
 				<ResponsiveContainer width="100%" height="100%">
-					<ComposedChart data={bookingGraphData}>
+					<ComposedChart data={bookingGraphData} margin={{ top: 10, right: 32, left: 25, bottom: 10 }}>
 						<CartesianGrid strokeDasharray="3 3" className="stroke-stone-200" />
 						<XAxis dataKey="name" padding={{ left: 0, right: 0 }} tick={{ fill: "#6b7280" }} />
-						<YAxis yAxisId="left" tick={{ fill: "#6b7280" }} domain={[0, 100]} label={{ value: "Occupancy %", angle: -90, position: "insideLeft", fill: "#6b7280" }} />
+						<YAxis 
+							yAxisId="left" 
+							tick={{ fill: "#6b7280" }} 
+							domain={[0, 100]} 
+							label={{ 
+								value: "Occupancy %", 
+								angle: -90, 
+								position: "insideLeft", 
+								fill: "#6b7280", 
+								dx: -2,
+								style: { textAnchor: 'middle' }
+							}} 
+						/>
 						<YAxis
 							yAxisId="right"
 							orientation="right"
 							tick={{ fill: "#6b7280" }}
-							label={{ value: "Revenue (KES)", angle: 90, position: "insideRight", fill: "#6b7280" }}
+							label={{ 
+								value: "Revenue (KES)", 
+								angle: 90, 
+								position: "insideRight", 
+								fill: "#6b7280", 
+								dx: 30,
+								style: { textAnchor: 'middle' }
+							}}
 						/>
 						<Tooltip content={<CustomTooltip />} />
 						<Legend />
