@@ -2,6 +2,7 @@ import ActivitySection from "@/components/dash/root/ActivitySection";
 import { StatCards } from "@/components/dash/root/StatCards";
 import CalendarView from "@/components/dash/root/CalendarView";
 import ActivityGraph from "@/components/dash/root/ActivityGraph";
+import ActivityFeed from "@/components/dash/root/ActivityFeed";
 
 /**
  * DashboardPage component that displays key statistics and activity feed.
@@ -19,7 +20,8 @@ export default async function DashboardPage() {
 				<CalendarView />
 			</div>
 			<div className="mt-4">
-				<ActivitySection />
+				{/* ActivityFeed displays recent activities */}
+				<ActivityFeed />
 			</div>
 		</section>
 	);

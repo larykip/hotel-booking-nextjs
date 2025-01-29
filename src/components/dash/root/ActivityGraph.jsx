@@ -35,7 +35,7 @@ const ActivityGraph = () => {
 	}, []);
 
 	return (
-		<div className="overflow-hidden rounded-lg border border-stone-300 bg-white">
+		<div className="overflow-hidden rounded-lg border border-stone-300 bg-white mb-4 md:mb-0">
 			<div className="px-4 py-8">
 				<h3 className="font-medium">Weekly Performance</h3>
 				<p className="text-sm text-gray-500">Occupancy, bookings and revenue trends</p>
