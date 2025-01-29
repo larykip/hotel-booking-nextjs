@@ -82,12 +82,21 @@ export function AppSidebar() {
 			</SidebarContent>
 
 			<SidebarFooter>
-				{/* Settings button */}
-				<Button asChild variant="outline" className="w-full">
-					<Link href="/dashboard/settings">
-						<Settings /> Settings
+				{/* Settings button in expanded mode */}
+				<div className="group-data-[collapsible=icon]:hidden">
+					<Button asChild variant="outline" className="w-full">
+						<Link href="/dashboard/settings">
+							<Settings /> Settings
+						</Link>
+					</Button>
+				</div>
+
+				{/* Settings button in collapsed mode */}
+				<div className="hidden group-data-[collapsible=icon]:flex">
+					<Link href="/dashboard/settings" className="p-2">
+						<Settings />
 					</Link>
-				</Button>
+				</div>
 			</SidebarFooter>
 		</Sidebar>
 	);
