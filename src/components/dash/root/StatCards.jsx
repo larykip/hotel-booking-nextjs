@@ -32,7 +32,7 @@ export const StatCards = () => {
 	const notReadyPercentage = (statsData.occupancy.notReady / totalRooms) * 100;
 
 	return (
-		<div className="grid grid-cols-3 gap-3">
+		<div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 			{/* --- Start: Reservation and Housekeeping Card --- */}
 			<Card className="hover:bg-stone-100">
 				<CardHeader>
