@@ -59,7 +59,6 @@ export function AppSidebar() {
 			<SidebarContent>
 				{/* Search bar */}
 				<SidebarGroup>
-					{/* TODO: Search bar does not collapse properly when sidebar is collapsed */}
 					<Search />
 				</SidebarGroup>
 
