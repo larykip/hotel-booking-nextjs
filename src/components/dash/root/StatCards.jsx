@@ -135,14 +135,14 @@ export const StatCards = () => {
 				<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
 						<p className="text-sm text-gray-500">Last 30 days</p>
-						<span className="flex gap-2 text-2xl">
-							Ksh <p className="text-2xl font-bold">{statsData.revenue.last30Days}</p>
+						<span className="flex gap-2 text-lg md:text-xl">
+							Ksh <p className="text-lg md:text-xl font-bold">{statsData.revenue.last30Days}</p>
 						</span>
 					</div>
 					<div>
 						<p className="text-sm text-gray-500">Yesterday</p>
-						<span className="flex gap-2 text-2xl">
-							Ksh <p className="text-2xl font-bold">{statsData.revenue.yesterday}</p>
+						<span className="flex gap-2 text-lg md:text-xl">
+							Ksh <p className="text-lg md:text-xl font-bold">{statsData.revenue.yesterday}</p>
 						</span>
 					</div>
 				</CardContent>
