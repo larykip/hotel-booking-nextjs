@@ -1,5 +1,8 @@
 import ActivitySection from "@/components/dash/root/ActivitySection";
 import { StatCards } from "@/components/dash/root/StatCards";
+import CalendarView from "@/components/dash/root/CalendarView";
+import ActivityGraph from "@/components/dash/root/ActivityGraph";
+import ActivityFeed from "@/components/dash/root/ActivityFeed";
 
 /**
  * DashboardPage component that displays key statistics and activity feed.
@@ -10,8 +13,16 @@ export default async function DashboardPage() {
 		<section className="h-full border border-stone-200 p-2">
 			{/* StatCards displays key statistics of the hotel */}
 			<StatCards />
-			{/* ActivitySection displays activity feed, calendar, and activity graph */}
-			<ActivitySection />
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+				{/* ActivitySection displays activity feed and activity graph */}
+				<ActivityGraph />
+				{/* CalendarView displays a calendar with bookings */}
+				<CalendarView />
+			</div>
+			<div className="mt-4">
+				{/* ActivityFeed displays recent activities */}
+				<ActivityFeed />
+			</div>
 		</section>
 	);
 }

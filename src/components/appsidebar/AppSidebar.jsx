@@ -59,7 +59,6 @@ export function AppSidebar() {
 			<SidebarContent>
 				{/* Search bar */}
 				<SidebarGroup>
-					{/* TODO: Search bar does not collapse properly when sidebar is collapsed */}
 					<Search />
 				</SidebarGroup>
 
@@ -83,35 +82,22 @@ export function AppSidebar() {
 			</SidebarContent>
 
 			<SidebarFooter>
-				{/* Settings button */}
-				<Button asChild variant="outline" className="w-full">
-					<Link href="/dashboard/settings">
-						<Settings /> Settings
+				{/* Settings button in expanded mode */}
+				<div className="group-data-[collapsible=icon]:hidden">
+					<Button asChild variant="outline" className="w-full">
+						<Link href="/dashboard/settings">
+							<Settings /> Settings
+						</Link>
+					</Button>
+				</div>
+
+				{/* Settings button in collapsed mode */}
+				<div className="hidden group-data-[collapsible=icon]:flex">
+					<Link href="/dashboard/settings" className="p-2">
+						<Settings />
 					</Link>
-				</Button>
+				</div>
 			</SidebarFooter>
 		</Sidebar>
 	);
 }
-
-// CUSTOM SIDEBAR DESIGN
-
-// import LogoutButton from './LogoutButton'
-// import AccountToggle from './AccountToggle'
-// import Search from './Search'
-
-// export const Sidebar = () => {
-//   return (
-//     <section className='p-4 border-r border-r-stone-400 border-opacity-25 bg-neutral-200'>
-
-//         <div className='overflow-y-scroll sticky top-4 h-[calc(100vh-32px-48px)]'>
-//           <AccountToggle />
-//           <Search />
-//         </div>
-
-//         {/* TODO: Logout button */}
-//         <LogoutButton />
-
-//     </section>
-//   )
-// }

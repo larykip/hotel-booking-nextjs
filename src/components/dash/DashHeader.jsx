@@ -77,12 +77,12 @@ const DashHeader = () => {
 				{/* --- Sidebar and Dashboard Title End --- */}
 
 				{/* --- User Greeting and Weather Start --- */}
-				<div className="flex items-center gap-4">
-					<div className="flex items-center gap-2 text-sm">
-						<span>{getGreeting()},</span>
-						<span className="font-bold">{user?.firstName || "User"}!</span>
-					</div>
-					{/* TODO: Could also be changed to a date instead */}
+				<div className="hidden lg:flex items-center gap-4">
+									<div className="flex items-center gap-2 text-sm">
+										<span>{getGreeting()},</span>
+										<span className="font-bold">{user?.firstName || "User"}!</span>
+									</div>
+									{/* TODO: Could also be changed to a date instead */}
 					<div className="flex items-center gap-2 text-sm">
 						{weatherLoading ? (
 							<div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ const DashHeader = () => {
 					{/* --- New Reservation Button Start --- */}
 					<Button className="gap-2">
 						<PencilLine className="h-4 w-4" />
-						New Reservation
+						<span className="hidden lg:inline">New Reservation</span>
 					</Button>
 					{/* --- New Reservation Button End --- */}
 

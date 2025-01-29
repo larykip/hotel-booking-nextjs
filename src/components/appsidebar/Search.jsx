@@ -14,9 +14,10 @@ const Search = () => {
 
   return (
     <>
+      {/* Full search bar, hidden in collapsed mode */}
+      <div className="group-data-[collapsible=icon]:hidden">
         <div className='bg-stone-200 mb-4 relative rounded-md flex items-center px-2 py-1.5 text-sm'>
           <SearchIcon className='mr-2'/>
-          {/* TODO: Consider removing the input and keeping only the search icon as a button */}
           <input
             onFocus={(e) => {
               e.target.blur();
@@ -31,8 +32,17 @@ const Search = () => {
             CTRL K
           </span>
         </div>
+      </div>
 
-        <CommandMenu open={open} setOpen={setOpen}/>
+      {/* Display only search icon in collapsed mode */}
+      <button
+        className="hidden group-data-[collapsible=icon]:flex items-center p-2"
+        onClick={() => setOpen(true)}
+      >
+        <SearchIcon />
+      </button>
+
+      <CommandMenu open={open} setOpen={setOpen}/>
     </>
   )
 };
