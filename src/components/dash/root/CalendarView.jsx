@@ -26,7 +26,7 @@ const CalendarView = () => {
 	}, []);
 
 	return (
-		<Card className="h-full">
+		<Card className="h-full max-h-[500px] overflow-y-auto mb-4 md:mb-0">
 			<CardHeader className="flex flex-row items-center justify-between">
 				<CardTitle className="text-base font-medium">Calendar</CardTitle>
 				<div className="flex items-center gap-2">
