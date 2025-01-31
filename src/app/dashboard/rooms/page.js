@@ -107,9 +107,9 @@ const RoomsPage = () => {
       finally {
         setIsLoading(false);
       }
-    }
-    fetchRooms()
-  }, [])
+    };
+    fetchRooms();
+  }, []);
 
   /**
    * Transforms a room object into the format expected by the BookingSheet component
@@ -148,7 +148,7 @@ const RoomsPage = () => {
     };
     setSelectedRoom(transformedRoom);
     setIsBookingOpen(true);
-  }
+  };
 
   const applyFilters = () => {
     const filtered = roomTypes.map(type => ({
@@ -301,8 +301,8 @@ const RoomsPage = () => {
       </div>
       
     </section>
-  )
-}
+  );
+};
 
 // Skeleton component for loading state
 const BookingSkeleton = () => (
