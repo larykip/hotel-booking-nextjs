@@ -1,0 +1,6 @@
+# Ignore build directory
+build/
+
+# Ignore shadcn and third party code
+ui/
+

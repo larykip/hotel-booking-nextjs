@@ -25,9 +25,26 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    role: { type: String, enum: ['customer', 'admin'], default: 'customer' },
-}, { timestamps: true })
+    role: { type: String, enum: ['guest', 'admin'], default: 'guest' },
+    // currentAddress: {
+    //     type: String,
+    //     required: true
+    // },
+    // contactNumber: {
+    //     type: String,
+    //     required: true
+    // },
+    // idType: {
+    //     type: { String, enum: ['National-ID', 'Passport'], default: 'National-ID' },
+    //     // required: true
+    // },
+    // idNumber: {
+    //     type: String,
+    //     required: true,
+    //     unique: true
+    // },
+}, { timestamps: true });
 
-const User = mongoose.models.User || mongoose.model('User', userSchema)
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;

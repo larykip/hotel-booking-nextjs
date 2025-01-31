@@ -22,6 +22,17 @@ MetroManor Hotel Booking System is a modern web application built with Next.js 1
 - **Backend**: Next.js API Routes
 - **Database**: MongoDB (with Mongoose ORM)
 
+### NPM Scripts
+
+To streamline development and deployment, the following npm scripts are available:
+
+- `dev`: Starts the development server
+- `build`: Builds the application for production
+- `start`: Starts the production server
+- `lint`: Runs ESLint to check for code quality
+- `prettier`: Formats the code using Prettier
+- `generate`: Generates dummy data for testing
+
 ### Project Structure
 
 - `src/app`: Next.js app router and API routes
@@ -32,6 +43,7 @@ MetroManor Hotel Booking System is a modern web application built with Next.js 1
 ### Authentication Flow
 
 The application uses a token-based authentication system:
+
 1. Users sign up or log in through dedicated forms
 2. Upon successful authentication, a JWT is stored in an HTTP-only cookie
 3. Protected routes and API endpoints verify the JWT for access control
@@ -41,12 +53,14 @@ The application uses a token-based authentication system:
 To set up and run the MetroManor Hotel Booking System on your local machine, follow these steps:
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/larykip/hotel-booking-nextjs
    cd hotel-booking-nextjs
    ```
 
 2. Create a `.env.local` file in the root directory and add the following environment variables:
+
    ```
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
@@ -55,11 +69,13 @@ To set up and run the MetroManor Hotel Booking System on your local machine, fol
 Note: Ensure you have Node.js (version 22 or later) and npm installed on your machine before proceeding.
 
 3. Install the dependencies:
+
    ```bash
    npm install
    ```
 
 4. Run the development server:
+
    ```bash
    npm run dev
    ```
