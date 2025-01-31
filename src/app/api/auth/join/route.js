@@ -12,13 +12,13 @@ const bcrypt = require("bcryptjs");
  */
 export async function POST(req) {
     try {
-        const { firstName, lastName, gender, emailAddress, password, role = 'customer' } = await req.json()
+        const { firstName, lastName, gender, emailAddress, password, role = 'guest' } = await req.json();
         // hash the provided password for security
         const hashedPassword = await bcrypt.hash(password, 10); // (10) = salt rounds, determining the complexity of the hash
         // generate an avatar for the user
         const userAvatar = await avatarGenerator(gender, firstName);
 
-        await connectMongoDB()
+        await connectMongoDB();
 
         const newUser = await User.create({
             firstName,
@@ -28,7 +28,7 @@ export async function POST(req) {
             avatar: userAvatar,
             password: hashedPassword,
             role
-        })
+        });
         // Create a response with a JWT token
         return await createResponseWithToken(
             { message: 'User created successfully'},
