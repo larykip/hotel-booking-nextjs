@@ -87,22 +87,31 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
      * @returns {Function} returns.onClick - Button click handler
      */
     const getButtonState = () => {
+        // Get base state from primary status
+        const baseState = (() => {
+            switch (room?.status) {
+                case "AVAILABLE":
+                    return { text: "Book Now", variant: "default", onClick: () => handleBookNow() };
+                case "BOOKED":
+                    return { text: "Check-in", variant: "default", onClick: () => handleCheckIn() };
+                case "OCCUPIED":
+                    return { text: "Check-out", variant: "default", onClick: () => handleCheckOut() };
+                case "MAINTENANCE":
+                    return { text: "Under Maintenance", variant: "secondary", onClick: () => {} };
+                default:
+                    return { text: "Not Available", variant: "secondary", onClick: () => {} };
+            }
+        })();
+
+        // Add cleaning indicator if needed
         if (room?.secondaryStatus === 'CLEANING') {
-            return { text: "Under Cleaning", variant: "secondary", onClick: () => {} };
+            return {
+                ...baseState,
+                text: `${baseState.text} (Cleaning in progress)`
+            };
         }
 
-        switch (room?.status) {
-            case "AVAILABLE":
-                return { text: "Book Now", variant: "default", onClick: () => handleBookNow() };
-            case "BOOKED":
-                return { text: "Check-in", variant: "default", onClick: () => handleCheckIn() };
-            case "OCCUPIED":
-                return { text: "Check-out", variant: "default", onClick: () => handleCheckOut() };
-            case "MAINTENANCE":
-                return { text: "Under Maintenance", variant: "secondary", onClick: () => {} };
-            default:
-                return { text: "Not Available", variant: "secondary", onClick: () => {} };
-        }
+        return baseState;
     }
 
     /**
@@ -617,11 +626,11 @@ const BookingSheet = ({ room, isOpen, onClose }) => {
                     </div>
 
                     <div className="flex gap-2">
-                        {room?.status !== 'AVAILABLE' && (
+                        {(room?.activeBooking || room?.status === 'BOOKED' || room?.status === 'OCCUPIED') && (
                             <Button 
                                 variant='outline' 
                                 className='text-red-500'
-                                onClick={handleCancelBooking} // Add onClick handler
+                                onClick={handleCancelBooking}
                             >
                                 Cancel reservation
                             </Button>

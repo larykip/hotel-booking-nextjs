@@ -36,9 +36,10 @@ export async function POST(request, { params }) {
             status: 'COMPLETED'
         });
 
-        // Update room status and remove active booking
+        // Update room status and clear booking info
         await Room.findByIdAndUpdate(roomId, {
-            status: 'CLEANING',
+            status: 'AVAILABLE',
+            secondaryStatus: 'CLEANING',
             activeBooking: null,
             customer: null
         });
@@ -51,4 +52,4 @@ export async function POST(request, { params }) {
         console.error('Check-out error:', error);
         return NextResponse.json({ error: 'Failed to process check-out' }, { status: 500 });
     }
-} 
+}
