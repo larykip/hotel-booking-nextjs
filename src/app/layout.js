@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ScrollButton from "@/components/ui/ScrollButton";
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
 			<body className={inter.className}>
 				{children}
 				<Analytics /> {/*  Vercel Analytics */}
+				<SpeedInsights /> {/*  Vercel Speed Insights */}
 				<ScrollButton />
 			</body>
 		</html>
